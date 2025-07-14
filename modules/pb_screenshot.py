@@ -32,7 +32,8 @@ class Module(BaseModule):
             "output_directory": "screenshots",
             "retry_count": "2",
             "thread_count": "4",
-            "page_load_timeout": 30
+            "page_load_timeout": 30,
+            "wayback": "False"
         }
         self.required_options = ["headless", "input_file", "output_directory",
                                  "retry_count", "thread_count", "page_load_timeout"]
@@ -41,7 +42,8 @@ class Module(BaseModule):
     def requires(self):
         url = self.options.get("url", "").strip()
         input_file = self.options.get("input_file", "").strip()
-        if url and (not input_file or not Path(input_file).exists()):
+        wayback = self.options.get("wayback")
+        if url and (not input_file or not Path(input_file).exists()) and (wayback == "True"):
             return ["pb_wayback"]
         return []
 
@@ -52,6 +54,8 @@ class Module(BaseModule):
         url_provided = self.options.get("url", "").strip() != ""
         input_file_path = self.options.get("input_file", "").strip()
         input_file_provided = input_file_path != ""
+
+        wayback = self.options.get("wayback", False)
 
         if url_provided and input_file_provided:
             printc(f"[{self.name}] Error: Both 'url' and 'input_file' are set. Please use only one.", level="error", use_tqdm=True)
@@ -73,9 +77,15 @@ class Module(BaseModule):
                 urls = [line.strip() for line in f if line.strip()]
 
         elif url_provided:
-            urls = shared_data.get("wayback_urls", [])
-            if not urls:
-                printc(f"[{self.name}] Warning: No URLs found from previous module.", level="warn", use_tqdm=True)
+            if wayback.lower() == "true":
+                urls = shared_data.get("wayback_urls", [])
+                if not urls:
+                    printc(f"[{self.name}] Warning: No URLs found from previous module.", level="warn", use_tqdm=True)
+                    return
+            elif wayback.lower() == "false":
+                urls = [self.options.get("url", "").strip()]
+            else:
+                printc(f"[{self.name}] Warning: Required option for wayback is True/False, please use one of them.", level="warn", use_tqdm=True)
                 return
 
         output_path = Path(self.options["output_directory"])
@@ -91,6 +101,7 @@ class Module(BaseModule):
         full_output_path.mkdir(parents=True, exist_ok=True)
         error_log = output_path / subdir_name / f"error_urls-{timestamp}.txt"
 
+        printc(f"DEBUG: {len(urls)}", level="debug")
         progress = tqdm(total=len(urls), desc="Taking screenshots")
         success_counter = [0]
         progress_lock = threading.Lock()
@@ -100,8 +111,17 @@ class Module(BaseModule):
             options.add_argument('--disable-gpu')
             options.add_argument('--no-sandbox')
             options.add_argument('--window-size=1920,1080')
+            options.add_argument('--disable-software-rasterizer')
+            options.add_argument('--disable-dev-shm-usage')
+            options.add_argument('--disable-gpu-compositing')
+            options.add_argument('--disable-extensions')
+            # options.add_argument('--remote-debugging-port=0')
+            options.add_argument('--log-level=3')  # Only fatal errors
+            options.add_argument('--disable-logging')
+            options.add_argument('--disable-extensions')
+            options.add_experimental_option('excludeSwitches', ['enable-logging'])
             if headless:
-                options.add_argument('--headless')
+                options.add_argument('--headless=new')
 
             browser = None
             for attempt in range(retry_count):
@@ -111,13 +131,14 @@ class Module(BaseModule):
                     browser.get(url)
                     screenshot_file = full_output_path / f"screenshot_{i}.png"
                     browser.save_screenshot(str(screenshot_file))
+                    browser.quit()
+
                     with progress_lock:
                         msg = Text(f"[+] Captured screenshot for ") + colorize(url, "cyan", "underline")
-                        printc(msg, use_tqdm=True)
+                        printc(msg, level="success", use_tqdm=True)
                         logging.info(f"[{self.name}] Screenshot captured: {url}")
                         success_counter[0] += 1
                         progress.update(1)
-                    browser.quit()
                     return
                 except Exception as e:
                     with progress_lock:
@@ -125,7 +146,7 @@ class Module(BaseModule):
                               Text(f" Attempt {attempt + 1} failed for ") + colorize(url, "red", "underline")
                         printc(msg, use_tqdm=True)
                         logging.warning(f"[{self.name}] Attempt {attempt + 1} failed for {url}")
-                        progress.update(1)
+                        # progress.update(1)
                     if browser:
                         browser.quit()
             with open(error_log, "a") as ef:
