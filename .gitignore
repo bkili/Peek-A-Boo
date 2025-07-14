@@ -1,0 +1,41 @@
+snapback.log
+configs
+screenshots
+outputs
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+.venv/
+env/
+venv/
+
+# PyCharm / IntelliJ IDEA project files
+.idea/
+*.iml
+
+# OS generated files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Logs and database
+*.log
+
+# Runtime files
+*.pid
+
+# Environment-specific or personal
+.env
+*.swp
+*.bak
+
+# Cache and build
+build/
+dist/
+*.egg-info/
+.cache/

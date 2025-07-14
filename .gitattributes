@@ -1,0 +1,31 @@
+# Automatically normalize line endings
+* text=auto
+
+# Treat Python files as text and use default diff
+*.py text
+
+# Explicitly mark common binary file types
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.zip binary
+*.tar binary
+*.gz binary
+*.exe binary
+*.dll binary
+*.so binary
+
+# Treat Markdown and docs as UTF-8 text
+*.md text
+*.txt text
+*.rst text
+
+# Force consistent shell script endings
+*.sh text eol=lf
+
+# Ignore idea files and venv in export (optional)
+.idea/ export-ignore
+.venv/ export-ignore

@@ -1,0 +1,9 @@
+requests~=2.32.4
+selenium~=4.34.2
+tqdm~=4.67.1
+colorama
+rich~=14.0.0
+prompt-toolkit
+phonenumbers~=9.0.9
+paramiko~=3.5.1
+prompt_toolkit~=3.0.51
