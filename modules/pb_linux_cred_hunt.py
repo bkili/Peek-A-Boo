@@ -8,9 +8,11 @@ try:
     from core.utils.ssh_handler import *
     from core.utils.formatter import printc
     IS_PEEKABOO = True
+
 except ImportError:
     IS_PEEKABOO = False
     print("Running Locally ...")
+
 
 TARGET_FILES = [
     "/etc/passwd",
@@ -40,6 +42,7 @@ def fetch_and_save_file_remote(ssh, remote_path, local_path):
         printc(f"[+] Saved: {local_path}", level="success")
     except Exception as e:
         printc(f"[!] Failed to fetch {remote_path}: {e}", level="error")
+
 
 class Module(BaseModule):
     def __init__(self):

@@ -38,22 +38,23 @@ list modules
 use pb_scrape_keywords
 run
 
-config save target1
-config load target1
+save config target1
+load config target1
 ```
 
 ## Directory Structure
 
 ```
 Peek-A-Boo/
-├── core/             # Core framework (CLI, state, registry, utils)
-│   └── utils/        # Reusable utility modules (formatter, ssh_handler, etc.)
-├── modules/          # Modules: osint, recon, privilege escalation, utility, etc.
-├── exploits/         # Exploits and payload logic (CVE-style or custom)
-├── main.py           # CLI entry point
-├── requirements.txt  # Python dependencies
-├── README.md         # This file
-├── developer_guide.md# Developer guide for writing modules
+├── core/                 # Core framework (CLI, state, registry, utils)
+   └── utils/             # Reusable utility modules (formatter, ssh_handler, etc.)
+├── modules/              # Modules: osint, recon, privilege escalation, utility, etc.
+├── exploits/             # Exploits and payload logic (CVE-style or custom)
+├── main.py               # CLI entry point
+├── requirements.txt      # Python dependencies
+├── README.md             # This file
+├── docs                  # Documentations, Images etc.
+   └── DEVELOPER_GUIDE.md # Developer guide for writing modules
 ```
 
 ## Shared Data System

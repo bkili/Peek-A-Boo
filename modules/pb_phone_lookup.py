@@ -1,5 +1,4 @@
 #/modules/pb_phone_lookup.py
-import logging
 from modules.base import BaseModule
 import phonenumbers
 from phonenumbers import geocoder, carrier
@@ -83,4 +82,4 @@ class Module(BaseModule):
                 print(f"  Carrier   : {summary.get('numverify_carrier')}")
                 print(f"  Line Type : {summary.get('numverify_line_type')}")
         except:
-            logging.error(f"Error")
+            print("[!] Error")

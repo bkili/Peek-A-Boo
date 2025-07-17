@@ -147,3 +147,9 @@ Follow standard Python practices, ensure your module:
 - Includes logging via `printc`
 - Has meaningful `name`, `description`, and `category`
 
+## Templates
+
+For further, please check:
+
+- [Template Module](templates/pb_module_template.py)
+

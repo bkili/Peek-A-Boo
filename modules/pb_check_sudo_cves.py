@@ -3,6 +3,22 @@ from core.utils.cve_list import *
 from modules.base import BaseModule
 from core.utils.formatter import printc
 
+
+def parse_version(self, version):
+    parts = re.split(r"[\.p]", version)
+    return tuple(map(int, parts + ['0'] * (4 - len(parts))))
+
+
+def is_vulnerable(self, target, affected_range):
+    def parse(ver_str):
+        parts = re.split(r"[\.p]", ver_str)
+        return tuple(map(int, parts + ['0'] * (4 - len(parts))))
+
+    lower = parse(affected_range[0])
+    upper = parse(affected_range[1])
+    return lower <= target <= upper
+
+
 class Module(BaseModule):
     def __init__(self):
         super().__init__()
@@ -52,7 +68,7 @@ class Module(BaseModule):
                 printc("[!] No sudo version found in shared_data or options. Aborting.", level="error")
                 return
             try:
-                parsed_version = self.parse_version(version_str)
+                parsed_version = parse_version(version_str)
             except Exception as e:
                 printc(f"[!] Failed to parse version string {e}", level="error")
                 return
@@ -64,7 +80,7 @@ class Module(BaseModule):
 
         try:
             for cve in cve_list:
-                if self.is_vulnerable(parsed_version, cve["affected_versions"]):
+                if is_vulnerable(parsed_version, cve["affected_versions"]):
                     vulnerable.append(cve)
 
             if vulnerable:
@@ -78,18 +94,3 @@ class Module(BaseModule):
             printc("Failed to compare version with known vulnerabilities.", level="error")
 
         shared_data["sudo_vulnerable_cve"] = vulnerable
-
-
-    def parse_version(self, version):
-        parts = re.split(r"[\.p]", version)
-        return tuple(map(int, parts + ['0'] * (4 - len(parts))))
-
-
-    def is_vulnerable(self, target, affected_range):
-        def parse(ver_str):
-            parts = re.split(r"[\.p]", ver_str)
-            return tuple(map(int, parts + ['0'] * (4 - len(parts))))
-        
-        lower = parse(affected_range[0])
-        upper = parse(affected_range[1])
-        return lower <= target <= upper

@@ -3,32 +3,58 @@ import importlib
 import logging
 
 EXCLUDED_MODULES = {"__init__", "base"}
+EXCLUDED_PLUGINS = {}
+EXCLUDED_EXPLOITS = {}
 
 def list_modules():
     modules_dir = os.path.join(os.path.dirname(__file__), "..", "..", "modules")
     modules_dir = os.path.abspath(modules_dir)
+
     if not os.path.exists(modules_dir):
         logging.warning(f"Modules directory not found: {modules_dir}")
         return []
-    return [f[:-3] for f in os.listdir(modules_dir) if f.endswith(".py") and not f.startswith("_")]
+
+    return [
+        f[:-3]
+        for f in os.listdir(modules_dir)
+        if f.endswith(".py")
+           and not f.startswith("_")
+           and f[:-3] not in EXCLUDED_MODULES
+    ]
 
 
 def list_plugins():
     plugins_dir = os.path.join(os.path.dirname(__file__), "..", "..", "plugins")
     plugins_dir = os.path.abspath(plugins_dir)
+
     if not os.path.exists(plugins_dir):
         logging.warning(f"Plugins directory not found: {plugins_dir}")
         return []
-    return [f[:-3] for f in os.listdir(plugins_dir) if f.endswith(".py") and not f.startswith("_")]
+
+    return [
+        f[:-3]
+        for f in os.listdir(plugins_dir)
+        if f.endswith(".py")
+           and not f.startswith("_")
+           and f[:-3] not in EXCLUDED_PLUGINS
+    ]
 
 
 def list_exploits():
     exploits_dir = os.path.join(os.path.dirname(__file__), "..", "..", "exploits")
     exploits_dir = os.path.abspath(exploits_dir)
+
     if not os.path.exists(exploits_dir):
         logging.warning(f"Exploits directory not found: {exploits_dir}")
         return []
-    return [f[:-3] for f in os.listdir(exploits_dir) if f.endswith(".py") and not f.startswith("_")]
+
+    return [
+        f[:-3]
+        for f in os.listdir(exploits_dir)
+        if f.endswith(".py")
+           and not f.startswith("_")
+           and f[:-3] not in EXCLUDED_EXPLOITS
+    ]
 
 
 def list_modules_by_category():
