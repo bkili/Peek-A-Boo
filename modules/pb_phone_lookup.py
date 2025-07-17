@@ -1,7 +1,7 @@
 #/modules/pb_phone_lookup.py
 from modules.base import BaseModule
 import phonenumbers
-from phonenumbers import geocoder, carrier
+from phonenumbers import geocoder, carrier, timezone
 import requests
 
 class Module(BaseModule):
@@ -31,11 +31,13 @@ class Module(BaseModule):
             formatted = phonenumbers.format_number(parsed, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
             region = geocoder.description_for_number(parsed, "en")
             provider = carrier.name_for_number(parsed, "en")
+            time = timezone.time_zones_for_number(parsed)
 
             print(f"\n[+] Formatted: {formatted}")
             print(f"[+] Valid: {valid}")
             print(f"[+] Region: {region}")
             print(f"[+] Carrier: {provider}")
+            print(f"[+] Timezone: {time}\n")
 
             result = {
                 "formatted": formatted,
@@ -81,5 +83,5 @@ class Module(BaseModule):
                 print(f"  Location  : {summary.get('numverify_location')}")
                 print(f"  Carrier   : {summary.get('numverify_carrier')}")
                 print(f"  Line Type : {summary.get('numverify_line_type')}")
-        except:
-            print("[!] Error")
+        except Exception as e:
+            print(f"[!] Error: {e}")
