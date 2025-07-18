@@ -30,7 +30,6 @@ class BaseModule:
         Called with: reload
         """
         self.options = self.default_options.copy()
-        print(f"[{self.name}] Options reloaded to default.")
 
     def requires(self):
         """

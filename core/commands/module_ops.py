@@ -5,7 +5,7 @@ import os
 from core.registry import register_command
 from core.state import set_current_module
 from core.utils.formatter import printc
-from core.utils.listing import list_plugins, list_modules, list_exploits
+from core.utils.listing import list_plugins, list_exploits
 
 
 @register_command("use")

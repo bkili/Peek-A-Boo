@@ -7,11 +7,11 @@ def create_ssh_client(host, port, username, password):
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
     try:
-        ssh.connect(host, port=port, username=username, password=password)
+        ssh.connect(hostname=host, port=port, username=username, password=password)
         return ssh
 
     except Exception as e:
-        printc(f"[ssh_handler] Connection failed : {e}", level="error")
+        #printc(f"[ssh_handler] Connection failed : {e}", level="error")
         raise
 
 
