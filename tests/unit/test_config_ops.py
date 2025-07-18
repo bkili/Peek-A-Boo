@@ -1,5 +1,6 @@
 import unittest
 from unittest.mock import patch, MagicMock, mock_open
+from pathlib import Path
 from core.commands.config_ops import handle_save, handle_load
 
 
@@ -15,13 +16,14 @@ class TestConfigOpsCommands(unittest.TestCase):
         mod.options = {"a": "b"}
         mock_get_module.return_value = mod
         args = ["config", "myconfig.json"]
+        expected_path = Path("configs/myconfig.json")
 
         # Act
         handle_save(args, shared_data={})
 
         # Assert
         mock_open_file.assert_called_with(mock_open_file.call_args[0][0], "w")
-        mock_printc.assert_called_with("Configuration saved to configs/myconfig.json", level="success")
+        mock_printc.assert_called_with(f"Configuration saved to {expected_path}", level="success")
 
     @patch("core.commands.config_ops.printc")
     def test_handle_save_invalid_usage(self, mock_printc):
@@ -36,10 +38,11 @@ class TestConfigOpsCommands(unittest.TestCase):
         mock_module = MagicMock()
         mock_get_module.return_value = mock_module
         args = ["config", "myconfig.json"]
+        expected_path = Path("configs/myconfig.json")
 
         handle_load(args, shared_data={})
         mock_module.set_option.assert_called_with("opt1", "val1")
-        mock_printc.assert_called_with("Configuration loaded from configs/myconfig.json", level="success")
+        mock_printc.assert_called_with(f"Configuration loaded from {expected_path}", level="success")
 
     @patch("core.commands.config_ops.printc")
     def test_handle_load_invalid_args(self, mock_printc):
