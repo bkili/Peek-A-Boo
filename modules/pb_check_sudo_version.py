@@ -78,12 +78,14 @@ class Module(BaseModule):
         except Exception as e:
             printc(f"Error: {e}", level="error")
 
-    def get_sudo_version(self, ssh):
+    @staticmethod
+    def get_sudo_version(ssh):
         _, out, _ = ssh_exec(ssh, "sudo -V | head -n 1")
         match = re.search(r"Sudo version (\d+\.\d+\.\d+(?:p\d+)?)", out)
         return match.group(1) if match else None
 
-    def parse_version(self, version):
+    @staticmethod
+    def parse_version(version):
         parts = re.split(r"[\.p]", version)
         return tuple(map(int, parts + ['0'] * (4 - len(parts))))
 

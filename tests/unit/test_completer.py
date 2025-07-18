@@ -1,5 +1,5 @@
 import unittest
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 from prompt_toolkit.document import Document
 from prompt_toolkit.completion import Completion
 from core.completer import SmartCompleter

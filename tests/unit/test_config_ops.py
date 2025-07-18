@@ -1,6 +1,5 @@
 import unittest
 from unittest.mock import patch, MagicMock, mock_open
-import json
 from core.commands.config_ops import handle_save, handle_load
 
 

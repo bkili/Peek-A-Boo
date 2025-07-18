@@ -1,12 +1,11 @@
 # /core/cli.py
 import logging
+
+from core.completer import SmartCompleter
+from core.registry import COMMAND_HANDLERS
+from core.utils.formatter import printc
 from prompt_toolkit import PromptSession
 from prompt_toolkit.styles import Style
-
-from core.registry import COMMAND_HANDLERS
-from core.completer import SmartCompleter
-from core.utils.formatter import printc
-from core.commands import core, module_ops, config_ops, display, option_ops
 
 style = Style.from_dict({'prompt': '#00ff00 bold'})
 

@@ -1,6 +1,6 @@
 # core/utils/ssh_handler.py
 import paramiko
-from core.utils.formatter import printc
+# from core.utils.formatter import printc
 
 def create_ssh_client(host, port, username, password):
     ssh = paramiko.SSHClient()

@@ -90,7 +90,9 @@ class Module(BaseModule):
                     printc(f"   URL: {cve['url']}\n", level="url")
             else:
                 printc("[!] No known vulnerabilities found for this sudo version.", level="unsuccessful")
+                return
         except Exception as e:
-            printc("Failed to compare version with known vulnerabilities.", level="error")
+            printc(f"[!] Failed to compare version with known vulnerabilities: {e}", level="error")
+            return
 
         shared_data["sudo_vulnerable_cve"] = vulnerable
