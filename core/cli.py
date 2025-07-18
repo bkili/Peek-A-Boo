@@ -1,6 +1,7 @@
 # /core/cli.py
 import logging
 
+from core.commands import core, module_ops, config_ops, display, option_ops     # noqa
 from core.completer import SmartCompleter
 from core.registry import COMMAND_HANDLERS
 from core.utils.formatter import printc
