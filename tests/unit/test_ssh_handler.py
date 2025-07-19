@@ -1,11 +1,11 @@
 import sys
+import unittest
+
+from unittest.mock import patch, MagicMock
+from core.utils import ssh_handler
 
 print(sys.executable)
 print(sys.path)
-
-import unittest
-from unittest.mock import patch, MagicMock
-from core.utils import ssh_handler
 
 
 class TestSSHHandler(unittest.TestCase):

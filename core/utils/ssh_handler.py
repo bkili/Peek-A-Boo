@@ -1,8 +1,6 @@
 # core/utils/ssh_handler.py
 import paramiko
 
-# from core.utils.formatter import printc
-
 
 def create_ssh_client(host, port, username, password):
     ssh = paramiko.SSHClient()
@@ -13,8 +11,15 @@ def create_ssh_client(host, port, username, password):
         return ssh
 
     except Exception as e:
-        # printc(f"[ssh_handler] Connection failed : {e}", level="error")
-        raise
+        if "Authentication failed" in str(e):
+            raise ValueError("SSH authentication failed. Check your credentials.")
+        elif "No route to host" in str(e):
+            raise ConnectionError("Could not connect to the host. Check the network.")
+        elif "timed out" in str(e):
+            raise TimeoutError("SSH connection timed out. Check the host and port.")
+        else:
+            # For any other exceptions, we can just raise the original exception
+            raise e
 
 
 def ssh_exec(ssh, command):

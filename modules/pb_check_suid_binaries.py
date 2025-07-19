@@ -292,7 +292,7 @@ class Module(BaseModule):
             printc(f"Failed to connect : {e}", level="error")
             return
 
-        printc(f"SSH connected. Scanning for SUID binaries ...", level="module")
+        printc("SSH connected. Scanning for SUID binaries ...", level="module")
         suid_command = "find / -perm -4000 -type f 2> /dev/null"
         stdin, stdout, stderr = ssh_exec(ssh, suid_command)
         suid_binaries = stdout.splitlines()

@@ -38,7 +38,9 @@ def progress_bar(bar_length, current, total, start_time, spinner_cycle):
     bar = f"{left} {center_text} {right}"
 
     elapsed = int(time.time() - start_time)
-    elapsed_str = f"{elapsed}s" if elapsed < 60 else f"{elapsed//60}m{elapsed%60:02d}s"
+    elapsed_str = (
+        f"{elapsed}s" if elapsed < 60 else f"{elapsed // 60}m{elapsed % 60:02d}s"
+    )
     spin_char = next(spinner_cycle)
 
     sys.stdout.write(f"\r{spin_char} {bar} {elapsed_str}")

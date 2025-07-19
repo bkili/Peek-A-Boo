@@ -55,7 +55,7 @@ class Module(BaseModule):
 
             # Check sudo version
             try:
-                printc(f"[*] Trying to check sudo version ...", level="info")
+                printc("[*] Trying to check sudo version ...", level="info")
                 sudo_version = self.get_sudo_version(ssh)
             except Exception as e:
                 printc(f"[!] Failed to check sudo version: {e}", level="error")

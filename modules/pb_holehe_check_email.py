@@ -45,22 +45,22 @@ class Module(BaseModule):
             try:
                 debug_mode = int(debug_str)
             except (TypeError, ValueError):
-                printc(f"[!] Please provide debug mode as 0, 1 or 2", level="warn")
+                printc("[!] Please provide debug mode as 0, 1 or 2", level="warn")
                 return
 
             if debug_mode not in (0, 1, 2):
-                printc(f"[!] Debug level must be 0, 1 or 2", level="warn")
+                printc("[!] Debug level must be 0, 1 or 2", level="warn")
                 return
 
-            if email is None or email == "" or type(email) != str:
-                printc(f"[!] Please provide proper email.", level="warn")
+            if not isinstance(email, str) or not email.strip():
+                printc("[!] Please provide proper email.", level="warn")
                 return
 
             if not verbosity_level.isalpha() or verbosity_level.lower() not in (
                 "true",
                 "false",
             ):
-                printc(f"[!] Please provide verbose level [True/False]", level="warn")
+                printc("[!] Please provide verbose level [True/False]", level="warn")
                 return
 
             # Banner

@@ -77,7 +77,7 @@ class Module(BaseModule):
                     for keyword in keywords:
                         if keyword in line.lower():
                             msg = (
-                                Text(f"[+] ")
+                                Text("[+] ")
                                 + colorize(u, "cyan")
                                 + Text(" contains ")
                                 + colorize(keyword, "green", "bold")

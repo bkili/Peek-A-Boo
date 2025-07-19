@@ -44,7 +44,7 @@ class Module(BaseModule):
         )
 
         logging.debug(f"[debug] current options: {self.options}")
-        logging.info(f"[pb_wayback] Running Wayback URL collection...")
+        logging.info("[pb_wayback] Running Wayback URL collection...")
         logging.info(f"[*] Collecting links from Wayback Machine for: {target_url}")
 
         hash_val = hash_url(target_url)
@@ -109,5 +109,5 @@ class Module(BaseModule):
             print(f"URL         : {summary['url']}")
             print(f"Total links : {summary.get('total', 0)}")
             print(f"Saved to    : {summary.get('output_file', '-')}")
-        except:
-            logging.error(f"Error")
+        except Exception as e:
+            logging.error(f"Error: {e}")

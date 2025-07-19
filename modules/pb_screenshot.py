@@ -139,7 +139,7 @@ class Module(BaseModule):
         full_output_path.mkdir(parents=True, exist_ok=True)
         error_log = output_path / subdir_name / f"error_urls-{timestamp}.txt"
 
-        printc(f"DEBUG: {len(urls)}", level="debug")
+        #printc(f"DEBUG: {len(urls)}", level="debug")
         progress = tqdm(total=len(urls), desc="Taking screenshots")
         success_counter = [0]
         progress_lock = threading.Lock()
@@ -172,7 +172,7 @@ class Module(BaseModule):
                     browser.quit()
 
                     with progress_lock:
-                        msg = Text(f"[+] Captured screenshot for ") + colorize(
+                        msg = Text("[+] Captured screenshot for ") + colorize(
                             url, "cyan", "underline"
                         )
                         printc(msg, level="success", use_tqdm=True)
@@ -187,9 +187,9 @@ class Module(BaseModule):
                             + Text(f" Attempt {attempt + 1} failed for ")
                             + colorize(url, "red", "underline")
                         )
-                        printc(msg, use_tqdm=True)
+                        # printc(msg, use_tqdm=True)
                         logging.warning(
-                            f"[{self.name}] Attempt {attempt + 1} failed for {url}"
+                            f"[{self.name}] Attempt {attempt + 1} failed for {url} - {str(e)}"
                         )
                         # progress.update(1)
                     if browser:
@@ -255,5 +255,5 @@ class Module(BaseModule):
             print(f"Success   : {summary.get('success', 0)}")
             print(f"Failed    : {summary.get('fail', 0)}")
             print(f"Directory : {summary.get('output_dir', '-')}")
-        except:
-            logging.error(f"Error")
+        except Exception as e:
+            logging.error(f"Error: {str(e)}")
