@@ -48,7 +48,8 @@ class Module(BaseModule):
             "password": "",
         }
 
-        # List of options that are considered required (shown in CLI with 'yes' under Required)
+        # List of options that are considered required
+        # (shown in CLI with 'yes' under Required)
         self.required_options = []
 
         self.options = self.default_options.copy()

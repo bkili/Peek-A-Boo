@@ -77,7 +77,8 @@ class Module(BaseModule):
 
         if url_provided and input_file_provided:
             printc(
-                f"[{self.name}] Error: Both 'url' and 'input_file' are set. Please use only one.",
+                f"[{self.name}] Error: Both 'url' and 'input_file' are set."
+                "Please use only one.",
                 level="error",
                 use_tqdm=True,
             )
@@ -85,7 +86,7 @@ class Module(BaseModule):
 
         if not url_provided and not input_file_provided:
             printc(
-                f"[{self.name}] Error: Neither 'url' nor 'input_file' is provided. Cannot continue.",
+                f"[{self.name}] Error: Neither 'url' nor 'input_file' is provided.",
                 level="error",
                 use_tqdm=True,
             )
@@ -120,7 +121,8 @@ class Module(BaseModule):
                 urls = [self.options.get("url", "").strip()]
             else:
                 printc(
-                    f"[{self.name}] Warning: Required option for wayback is True/False, please use one of them.",
+                    f"[{self.name}] Warning: Required option for wayback is True/False,"
+                    " please use one of them.",
                     level="warn",
                     use_tqdm=True,
                 )
@@ -189,7 +191,8 @@ class Module(BaseModule):
                         )
                         # printc(msg, use_tqdm=True)
                         logging.warning(
-                            f"[{self.name}] Attempt {attempt + 1} failed for {url} - {str(e)}"
+                            f"[{self.name}] Attempt {attempt + 1} failed for "
+                            f"{url} - {str(e)}"
                         )
                         # progress.update(1)
                     if browser:
@@ -238,7 +241,8 @@ class Module(BaseModule):
         logging.info(f"[{self.name}] Screenshots saved to {output_path}")
         logging.info(f"[{self.name}] Errors logged to {error_log}")
         logging.info(
-            f"[{self.name}] Summary - Total: {total}, Success: {success}, Failed: {fail}"
+            f"[{self.name}] Summary - Total: {total}, "
+            f"Success: {success}, Failed: {fail}"
         )
 
         shared_data["last_summary"] = {

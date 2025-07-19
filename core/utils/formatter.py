@@ -8,7 +8,8 @@ console = Console()
 
 def printc(message, level: str = "info", use_tqdm: bool = False):
     """
-    Print colored messages using `rich`. Optionally write through tqdm if progress bar is active.
+    Print colored messages using `rich`.
+    Optionally write through tqdm if progress bar is active.
     Accepts both strings and Text objects.
     """
     style_map = {

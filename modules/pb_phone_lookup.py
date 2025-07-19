@@ -9,7 +9,10 @@ class Module(BaseModule):
     def __init__(self):
         super().__init__()
         self.name = "pb_phone_lookup"
-        self.description = "Analyze phone numbers using phonenumbers library and optional NumVerify API."
+        self.description = (
+            "Analyze phone numbers using phonenumbers library "
+            "and optional NumVerify API."
+        )
         self.category = "osint"
         self.author = "022NN"
         self.author_email = "n0220n@proton.me"
@@ -48,7 +51,7 @@ class Module(BaseModule):
 
             # ---------- NumVerify ----------
             if api_key:
-                url = f"http://apilayer.net/api/validate?access_key={api_key}&number={phone}&format=1"
+                url = f"http://apilayer.net/api/validate?access_key={api_key}&number={phone}&format=1"  # noqa: E501
                 response = requests.get(url)
                 if response.ok:
                     data = response.json()

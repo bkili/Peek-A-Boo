@@ -17,7 +17,10 @@ class Module(BaseModule):
         super().__init__()
 
         self.name = "pb_scrape_keywords"
-        self.description = "Scrapes single or multiple web pages to detect specific keywords in raw HTML content."
+        self.description = (
+            "Scrapes single or multiple web pages "
+            "to detect specific keywords in raw HTML content."
+        )
         self.category = "utility"
         self.author = "022NN"
         self.author_email = "n0220n@proton.me"
@@ -28,7 +31,8 @@ class Module(BaseModule):
         # Default options for the module
         self.default_options = {"url": "", "input_file": "", "keywords": ""}
 
-        # List of options that are considered required (shown in CLI with 'yes' under Required)
+        # List of options that are considered required
+        # (shown in CLI with 'yes' under Required)
         self.required_options = ["url", "keywords"]
 
         self.options = self.default_options.copy()

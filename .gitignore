@@ -2,6 +2,7 @@ snapback.log
 configs
 screenshots
 outputs
+ch_output
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

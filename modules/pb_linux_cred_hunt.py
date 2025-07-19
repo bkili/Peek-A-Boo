@@ -5,7 +5,7 @@ from pathlib import Path
 # remote condition
 try:
     from modules.base import BaseModule
-    from core.utils.ssh_handler import *
+    from core.utils.ssh_handler import create_ssh_client
     from core.utils.formatter import printc
 
     IS_PEEKABOO = True
@@ -48,7 +48,10 @@ class Module(BaseModule):
         super().__init__()
 
         self.name = "pb_linux_cred_hunt"
-        self.description = "Extracts key Linux credential-related files such as /etc/shadow and /etc/passwd from the target via SSH."
+        self.description = (
+            "Extracts key Linux credential-related files "
+            "such as /etc/shadow and /etc/passwd from the target via SSH."
+        )
         self.category = "recon"
         self.author = "022NN"
         self.author_email = "n0220n@proton.me"
@@ -65,7 +68,8 @@ class Module(BaseModule):
             "output_dir": "./ch_output",
         }
 
-        # List of options that are considered required (shown in CLI with 'yes' under Required)
+        # List of options that are considered required
+        # (shown in CLI with 'yes' under Required)
         self.required_options = ["rhost", "rport", "username", "password"]
 
         self.options = self.default_options.copy()

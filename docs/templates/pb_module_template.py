@@ -46,7 +46,8 @@ class Module(BaseModule):
 
     def run(self, shared_data):
         """
-        Main logic of the module. shared_data is used to exchange data with other modules.
+        Main logic of the module.
+        shared_data is used to exchange data with other modules.
         You can read values written by previous modules or store your output.
         """
         printc(f"[{self.name}] Running module...", level="info")

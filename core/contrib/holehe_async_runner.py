@@ -20,7 +20,8 @@ async def run_holehe_modules(
     email, module_base, out, debug_level=0, progress_bar_callback=None
 ):
     """
-    Runs all async functions under a package path (like holehe.modules) in parallel using trio.
+    Runs all async functions under a package path,
+    (like holehe.modules) in parallel using trio.
 
     :param email: Email address to check
     :param module_base: Base import path string (e.g., "holehe.modules")
