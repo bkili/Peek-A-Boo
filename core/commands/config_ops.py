@@ -5,6 +5,7 @@ from core.registry import register_command
 from core.state import get_current_module
 from core.utils.formatter import printc
 
+
 @register_command("save")
 def handle_save(args, shared_data):
     mod = get_current_module()
@@ -27,7 +28,9 @@ def handle_load(args, shared_data):
     if args[0] == "config" and len(args) > 1:
         module = get_current_module()
         if not module:
-            printc("No module selected. Use a module before loading config.", level="warn")
+            printc(
+                "No module selected. Use a module before loading config.", level="warn"
+            )
             return
         filepath = Path("configs") / args[1]
         filepath = filepath.expanduser()

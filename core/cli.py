@@ -1,25 +1,27 @@
 # /core/cli.py
 import logging
 
-from core.commands import core, module_ops, config_ops, display, option_ops     # noqa
+from core.commands import core, module_ops, config_ops, display, option_ops  # noqa
 from core.completer import SmartCompleter
 from core.registry import COMMAND_HANDLERS
 from core.utils.formatter import printc
 from prompt_toolkit import PromptSession
 from prompt_toolkit.styles import Style
 
-style = Style.from_dict({'prompt': '#00ff00 bold'})
+style = Style.from_dict({"prompt": "#00ff00 bold"})
+
 
 def start_cli():
     shared_data = {}
     cmd_module_name = ""
     completer = SmartCompleter()
     session = PromptSession(
-        message=lambda: f"[{cmd_module_name}]> ",
-        completer=completer,
-        style=style
+        message=lambda: f"[{cmd_module_name}]> ", completer=completer, style=style
     )
-    printc("Welcome to Peek-A-Boo CLI. Type 'help' to see available commands.", level="headline")
+    printc(
+        "Welcome to Peek-A-Boo CLI. Type 'help' to see available commands.",
+        level="headline",
+    )
 
     while True:
         try:

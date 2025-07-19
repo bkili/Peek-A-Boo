@@ -37,9 +37,11 @@ def handle_use(args, shared_data):
     except Exception as e:
         printc(f"[!] Failed to import module '{module_name}': {e}", level="error")
 
+
 @register_command("info")
 def handle_info(args, shared_data):
     from core.state import get_current_module
+
     mod = get_current_module()
     if args:
         module_name = args[0]
@@ -68,9 +70,11 @@ def handle_info(args, shared_data):
     else:
         printc("No module selected.", level="warn")
 
+
 @register_command("run")
 def handle_run(args, shared_data):
     from core.state import get_current_module
+
     mod = get_current_module()
     if not mod:
         printc("No module selected.", level="error")
@@ -89,9 +93,11 @@ def handle_run(args, shared_data):
                 printc(f"[core] Failed to run dependency {dep}: {e}", level="error")
     mod.run(shared_data)
 
+
 @register_command("reload")
 def handle_reload(args, shared_data):
     from core.state import get_current_module
+
     mod = get_current_module()
     if mod and hasattr(mod, "options_reload"):
         mod.options_reload()

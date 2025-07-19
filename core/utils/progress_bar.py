@@ -3,18 +3,20 @@ import time
 import itertools
 
 SPINNER_SETS = {
-    "braille": ['⠋','⠙','⠹','⠸','⠼','⠴','⠦','⠧','⠇','⠏'],
-    "classic": ['|', '/', '-', '\\'],
-    "circle": ['◐', '◓', '◑', '◒'],
-    "arrows": ['←','↑','→','↓'],
-    "corners": ['▖','▘','▝','▗'],
-    "dots": ['⠁','⠂','⠄','⡀','⢀','⠠','⠐','⠈'],
+    "braille": ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"],
+    "classic": ["|", "/", "-", "\\"],
+    "circle": ["◐", "◓", "◑", "◒"],
+    "arrows": ["←", "↑", "→", "↓"],
+    "corners": ["▖", "▘", "▝", "▗"],
+    "dots": ["⠁", "⠂", "⠄", "⡀", "⢀", "⠠", "⠐", "⠈"],
 }
+
 
 def create_spinner(spinner_name):
     if spinner_name not in SPINNER_SETS:
         raise ValueError(f"Unknown spinner name: {spinner_name}")
     return itertools.cycle(SPINNER_SETS[spinner_name])
+
 
 def progress_bar(bar_length, current, total, start_time, spinner_cycle):
     percent = current / total
@@ -41,4 +43,3 @@ def progress_bar(bar_length, current, total, start_time, spinner_cycle):
 
     sys.stdout.write(f"\r{spin_char} {bar} {elapsed_str}")
     sys.stdout.flush()
-

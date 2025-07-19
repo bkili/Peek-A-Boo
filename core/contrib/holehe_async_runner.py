@@ -5,6 +5,7 @@ import traceback
 import trio
 import httpx
 
+
 def get_all_holehe_modules(package_path, base_import_path):
     for _, modname, ispkg in pkgutil.iter_modules(package_path):
         full_import = f"{base_import_path}.{modname}"
@@ -14,7 +15,10 @@ def get_all_holehe_modules(package_path, base_import_path):
         else:
             yield full_import, modname
 
-async def run_holehe_modules(email, module_base, out, debug_level=0, progress_bar_callback=None):
+
+async def run_holehe_modules(
+    email, module_base, out, debug_level=0, progress_bar_callback=None
+):
     """
     Runs all async functions under a package path (like holehe.modules) in parallel using trio.
 
@@ -34,6 +38,7 @@ async def run_holehe_modules(email, module_base, out, debug_level=0, progress_ba
     progress = {"completed": 0}
 
     async with httpx.AsyncClient() as client:
+
         async def run_single_module(full_import, modname):
             try:
                 module = importlib.import_module(full_import)
@@ -44,7 +49,9 @@ async def run_holehe_modules(email, module_base, out, debug_level=0, progress_ba
                     print(f"[!] Error in {full_import}: {e}")
                 elif debug_level > 1:
                     tb = traceback.format_exc(limit=1).strip()
-                    print(f"[!] Error in {full_import}: {type(e).__name__}: {e}\n↳ {tb}")
+                    print(
+                        f"[!] Error in {full_import}: {type(e).__name__}: {e}\n↳ {tb}"
+                    )
             finally:
                 progress["completed"] += 1
                 if progress_bar_callback:

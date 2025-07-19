@@ -4,12 +4,15 @@ from prompt_toolkit.document import Document
 from prompt_toolkit.completion import Completion
 from core.completer import SmartCompleter
 
+
 class TestSmartCompleter(unittest.TestCase):
     @patch("core.completer.get_current_module")
     @patch("core.completer.list_modules")
     @patch("core.completer.list_plugins")
     @patch("core.completer.list_exploits")
-    def test_update_nested_creates_expected_keys(self, mock_exploits, mock_plugins, mock_modules, mock_get_current):
+    def test_update_nested_creates_expected_keys(
+        self, mock_exploits, mock_plugins, mock_modules, mock_get_current
+    ):
         mock_modules.return_value = ["mod1"]
         mock_plugins.return_value = ["plug1"]
         mock_exploits.return_value = ["exp1"]
@@ -21,7 +24,20 @@ class TestSmartCompleter(unittest.TestCase):
         completions = list(completer.base_completer.get_completions(Document(""), None))
         keywords = [c.text for c in completions]
 
-        expected = {"exit", "help", "use", "info", "list", "search", "run", "reload", "save", "load", "show", "set"}
+        expected = {
+            "exit",
+            "help",
+            "use",
+            "info",
+            "list",
+            "search",
+            "run",
+            "reload",
+            "save",
+            "load",
+            "show",
+            "set",
+        }
         self.assertTrue(expected.issubset(set(keywords)))
 
     @patch("core.completer.PathCompleter.get_completions")
@@ -39,7 +55,9 @@ class TestSmartCompleter(unittest.TestCase):
     @patch("core.completer.list_modules")
     @patch("core.completer.list_plugins")
     @patch("core.completer.list_exploits")
-    def test_generic_completion(self, mock_exploits, mock_plugins, mock_modules, mock_get_current):
+    def test_generic_completion(
+        self, mock_exploits, mock_plugins, mock_modules, mock_get_current
+    ):
         mock_modules.return_value = ["mod1"]
         mock_plugins.return_value = []
         mock_exploits.return_value = []
@@ -50,4 +68,3 @@ class TestSmartCompleter(unittest.TestCase):
         completions = list(completer.get_completions(doc, None))
 
         self.assertIn("mod1", [c.text for c in completions])
-

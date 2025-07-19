@@ -4,6 +4,7 @@ from core.utils.listing import list_modules, list_plugins, list_exploits
 from core.state import get_current_module
 from prompt_toolkit.document import Document
 
+
 def get_config_path_completions(text, complete_event):
     config_path = Path("configs") / text  # start from configs/
     completer = PathCompleter(
@@ -13,6 +14,7 @@ def get_config_path_completions(text, complete_event):
     )
     return completer.get_completions(Document(text), complete_event)
 
+
 class SmartCompleter(Completer):
     def __init__(self):
         self.path_completer = PathCompleter(expanduser=True, only_directories=False)
@@ -20,20 +22,28 @@ class SmartCompleter(Completer):
 
     def update_nested(self):
         current = get_current_module()
-        self.base_completer = NestedCompleter.from_nested_dict({
-            "exit": None,
-            "help": None,
-            "use": {mod: None for mod in list_modules() + list_plugins() + list_exploits()},
-            "info": {mod: None for mod in list_modules() + list_plugins() + list_exploits()},
-            "list": {"modules": None, "plugins": None, "exploits": None},
-            "search": None,
-            "run": None,
-            "reload": None,
-            "save": {"config": None},
-            "load": {"config": None, "module": None},
-            "show": {"options": None, "summary": None},
-            "set": {opt: None for opt in current.options} if current else {}
-        })
+        self.base_completer = NestedCompleter.from_nested_dict(
+            {
+                "exit": None,
+                "help": None,
+                "use": {
+                    mod: None
+                    for mod in list_modules() + list_plugins() + list_exploits()
+                },
+                "info": {
+                    mod: None
+                    for mod in list_modules() + list_plugins() + list_exploits()
+                },
+                "list": {"modules": None, "plugins": None, "exploits": None},
+                "search": None,
+                "run": None,
+                "reload": None,
+                "save": {"config": None},
+                "load": {"config": None, "module": None},
+                "show": {"options": None, "summary": None},
+                "set": {opt: None for opt in current.options} if current else {},
+            }
+        )
 
     def get_completions(self, document, complete_event):
         words = document.text.strip().split()

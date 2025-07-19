@@ -1,6 +1,8 @@
 # core/utils/ssh_handler.py
 import paramiko
+
 # from core.utils.formatter import printc
+
 
 def create_ssh_client(host, port, username, password):
     ssh = paramiko.SSHClient()
@@ -11,7 +13,7 @@ def create_ssh_client(host, port, username, password):
         return ssh
 
     except Exception as e:
-        #printc(f"[ssh_handler] Connection failed : {e}", level="error")
+        # printc(f"[ssh_handler] Connection failed : {e}", level="error")
         raise
 
 

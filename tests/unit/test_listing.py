@@ -2,6 +2,7 @@ import unittest
 from unittest.mock import patch, MagicMock
 from core.utils import listing
 
+
 class TestListingUtils(unittest.TestCase):
 
     @patch("core.utils.listing.importlib.import_module")

@@ -4,6 +4,7 @@ from core.utils.ssh_handler import *
 from modules.base import BaseModule
 from core.utils.formatter import printc
 
+
 class Module(BaseModule):
     def __init__(self):
         super().__init__()
@@ -19,10 +20,10 @@ class Module(BaseModule):
 
         # Default options for the module
         self.default_options = {
-            "rhost" : "",
-            "rport" : "22",
-            "username" : "",
-            "password" : "",
+            "rhost": "",
+            "rport": "22",
+            "username": "",
+            "password": "",
         }
 
         # List of options that are considered required (shown in CLI with 'yes' under Required)
@@ -73,7 +74,7 @@ class Module(BaseModule):
             ssh.close()
 
             # Share version data to other modules if neccessary
-            shared_data["sudo_version"] = parsed_sudo_version   # Shared Data
+            shared_data["sudo_version"] = parsed_sudo_version  # Shared Data
 
         except Exception as e:
             printc(f"Error: {e}", level="error")
@@ -87,5 +88,4 @@ class Module(BaseModule):
     @staticmethod
     def parse_version(version):
         parts = re.split(r"[\.p]", version)
-        return tuple(map(int, parts + ['0'] * (4 - len(parts))))
-
+        return tuple(map(int, parts + ["0"] * (4 - len(parts))))

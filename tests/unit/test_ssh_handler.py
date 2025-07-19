@@ -1,3 +1,8 @@
+import sys
+
+print(sys.executable)
+print(sys.path)
+
 import unittest
 from unittest.mock import patch, MagicMock
 from core.utils import ssh_handler
@@ -12,7 +17,9 @@ class TestSSHHandler(unittest.TestCase):
 
         client = ssh_handler.create_ssh_client("127.0.0.1", 22, "user", "pass")
 
-        mock_ssh.connect.assert_called_with(hostname="127.0.0.1", port=22, username="user", password="pass")
+        mock_ssh.connect.assert_called_with(
+            hostname="127.0.0.1", port=22, username="user", password="pass"
+        )
         self.assertEqual(client, mock_ssh)
 
     @patch("paramiko.SSHClient")

@@ -1,4 +1,4 @@
-#main.py
+# main.py
 from core.cli import start_cli
 
 if __name__ == "__main__":

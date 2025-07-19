@@ -1,5 +1,6 @@
 # modules/base.py
 
+
 class BaseModule:
     def __init__(self):
         self.name = "base"
@@ -21,8 +22,6 @@ class BaseModule:
         """
         if key in self.options:
             self.options[key] = value.strip()
-
-
 
     def options_reload(self):
         """

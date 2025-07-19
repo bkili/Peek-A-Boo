@@ -1,8 +1,9 @@
-#/modules/pb_phone_lookup.py
+# /modules/pb_phone_lookup.py
 from modules.base import BaseModule
 import phonenumbers
 from phonenumbers import geocoder, carrier, timezone
 import requests
+
 
 class Module(BaseModule):
     def __init__(self):
@@ -15,10 +16,7 @@ class Module(BaseModule):
         self.url = "https://github.com/bkili"
         self.license = ""
         self.version = "0.0.1"
-        self.options = {
-            "phone_number": "",
-            "numverify_api_key": ""
-        }
+        self.options = {"phone_number": "", "numverify_api_key": ""}
         self.required_options = ["phone_number"]
 
     def run(self, shared_data):
@@ -28,7 +26,9 @@ class Module(BaseModule):
         try:
             parsed = phonenumbers.parse(phone, None)
             valid = phonenumbers.is_valid_number(parsed)
-            formatted = phonenumbers.format_number(parsed, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
+            formatted = phonenumbers.format_number(
+                parsed, phonenumbers.PhoneNumberFormat.INTERNATIONAL
+            )
             region = geocoder.description_for_number(parsed, "en")
             provider = carrier.name_for_number(parsed, "en")
             time = timezone.time_zones_for_number(parsed)
@@ -43,7 +43,7 @@ class Module(BaseModule):
                 "formatted": formatted,
                 "valid": valid,
                 "region": region,
-                "carrier": provider
+                "carrier": provider,
             }
 
             # ---------- NumVerify ----------
@@ -57,12 +57,14 @@ class Module(BaseModule):
                     print(f"  - Location : {data.get('location', '-')}")
                     print(f"  - Carrier  : {data.get('carrier', '-')}")
                     print(f"  - Country  : {data.get('country_name', '-')}")
-                    result.update({
-                        "numverify_line_type": data.get("line_type"),
-                        "numverify_location": data.get("location"),
-                        "numverify_carrier": data.get("carrier"),
-                        "numverify_country": data.get("country_name")
-                    })
+                    result.update(
+                        {
+                            "numverify_line_type": data.get("line_type"),
+                            "numverify_location": data.get("location"),
+                            "numverify_carrier": data.get("carrier"),
+                            "numverify_country": data.get("country_name"),
+                        }
+                    )
                 else:
                     print("[!] NumVerify API request failed.")
 

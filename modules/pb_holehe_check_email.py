@@ -13,7 +13,9 @@ class Module(BaseModule):
         super().__init__()
 
         self.name = "pb_holehe_check_email"
-        self.description = "Checks email addresses across various online platforms using holehe."
+        self.description = (
+            "Checks email addresses across various online platforms using holehe."
+        )
         self.category = "osint"
         self.author = "022NN"
         self.author_email = "n0220n@proton.me"
@@ -24,7 +26,7 @@ class Module(BaseModule):
         self.default_options = {
             "e-mail": "test@example.com",
             "verbose": "False",
-            "debug": 0
+            "debug": 0,
         }
 
         self.required_options = ["e-mail"]
@@ -54,7 +56,10 @@ class Module(BaseModule):
                 printc(f"[!] Please provide proper email.", level="warn")
                 return
 
-            if not verbosity_level.isalpha() or verbosity_level.lower() not in ("true", "false"):
+            if not verbosity_level.isalpha() or verbosity_level.lower() not in (
+                "true",
+                "false",
+            ):
                 printc(f"[!] Please provide verbose level [True/False]", level="warn")
                 return
 
@@ -76,7 +81,7 @@ class Module(BaseModule):
                 "holehe.modules",
                 out,
                 debug_mode,
-                lambda c, t: progress_bar(bar_len, c, t, start_time, spinner_cycle)
+                lambda c, t: progress_bar(bar_len, c, t, start_time, spinner_cycle),
             )
 
             valid_hits = []
@@ -111,9 +116,14 @@ class Module(BaseModule):
                     if verbosity_level == "true":
                         printc(f"    └── Domain: {domain}", level="info")
                         printc(f"    └── Method: {method}", level="info")
-                        printc(f"    └── Frequent Rate Limit: {frequent_rate_limit}", level="info")
+                        printc(
+                            f"    └── Frequent Rate Limit: {frequent_rate_limit}",
+                            level="info",
+                        )
                         printc(f"    └── Rate Limit: {rate_limit}", level="info")
-                        printc(f"    └── Email Recovery: {email_recovery}", level="info")
+                        printc(
+                            f"    └── Email Recovery: {email_recovery}", level="info"
+                        )
                         printc(f"    └── Phone Number: {phone_number}", level="info")
                         printc(f"    └── Others: {others}", level="info")
 

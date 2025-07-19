@@ -2,6 +2,7 @@ import logging
 from modules.base import BaseModule
 from core.utils.formatter import printc
 
+
 class Module(BaseModule):
     def __init__(self):
         # Initialize shared base functionality (options, logging, etc.)
@@ -26,9 +27,7 @@ class Module(BaseModule):
         self.version = "<Version>"
 
         # Default options for the module
-        self.default_options = {
-            "example_option": "default_value"
-        }
+        self.default_options = {"example_option": "default_value"}
 
         # List of required options (CLI will show them as Required = yes)
         self.required_options = ["example_option"]
@@ -57,7 +56,10 @@ class Module(BaseModule):
             # Example: Read from shared_data if previous module exists
             previous_value = shared_data.get("previous_module_output")
             if previous_value:
-                printc(f"[{self.name}] Received from previous module: {previous_value}", level="info")
+                printc(
+                    f"[{self.name}] Received from previous module: {previous_value}",
+                    level="info",
+                )
 
             # Example: Read this module's options
             example_value = self.options.get("example_option")
@@ -67,7 +69,10 @@ class Module(BaseModule):
 
             # Example: Store result into shared_data for next modules
             shared_data["your_module_output"] = "some_value"
-            printc(f"[{self.name}] Shared data updated with key 'your_module_output'", level="info")
+            printc(
+                f"[{self.name}] Shared data updated with key 'your_module_output'",
+                level="info",
+            )
 
         except Exception as e:
             printc(f"[{self.name}] Error during execution: {e}", level="error")

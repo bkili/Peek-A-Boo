@@ -3,6 +3,7 @@ from core.registry import register_command
 from core.state import get_current_module
 from core.utils.formatter import printc
 
+
 @register_command("set")
 def handle_set(args, shared_data):
     mod = get_current_module()

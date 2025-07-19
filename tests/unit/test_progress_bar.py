@@ -45,9 +45,9 @@ class TestProgressBarUtils(unittest.TestCase):
         # Analyze captured output
         output = captured_output.getvalue()
         self.assertIn("10/100", output)  # check for progress indicator
-        self.assertIn("s", output)       # check for elapsed time suffix
-        self.assertIn("#", output)       # check for spinner character
+        self.assertIn("s", output)  # check for elapsed time suffix
+        self.assertIn("#", output)  # check for spinner character
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

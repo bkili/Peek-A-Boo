@@ -6,6 +6,7 @@ EXCLUDED_MODULES = {"__init__", "base"}
 EXCLUDED_PLUGINS = {}
 EXCLUDED_EXPLOITS = {}
 
+
 def list_modules():
     modules_dir = os.path.join(os.path.dirname(__file__), "..", "..", "modules")
     modules_dir = os.path.abspath(modules_dir)
@@ -18,8 +19,8 @@ def list_modules():
         f[:-3]
         for f in os.listdir(modules_dir)
         if f.endswith(".py")
-           and not f.startswith("_")
-           and f[:-3] not in EXCLUDED_MODULES
+        and not f.startswith("_")
+        and f[:-3] not in EXCLUDED_MODULES
     ]
 
 
@@ -35,8 +36,8 @@ def list_plugins():
         f[:-3]
         for f in os.listdir(plugins_dir)
         if f.endswith(".py")
-           and not f.startswith("_")
-           and f[:-3] not in EXCLUDED_PLUGINS
+        and not f.startswith("_")
+        and f[:-3] not in EXCLUDED_PLUGINS
     ]
 
 
@@ -52,8 +53,8 @@ def list_exploits():
         f[:-3]
         for f in os.listdir(exploits_dir)
         if f.endswith(".py")
-           and not f.startswith("_")
-           and f[:-3] not in EXCLUDED_EXPLOITS
+        and not f.startswith("_")
+        and f[:-3] not in EXCLUDED_EXPLOITS
     ]
 
 
@@ -94,4 +95,3 @@ def list_exploits_by_category():
         except Exception as e:
             logging.warning(f"Failed to categorize exploit '{exploit_name}': {e}")
     return categorized
-

@@ -2,6 +2,7 @@ import unittest
 from unittest.mock import patch, MagicMock
 from core.commands import display
 
+
 class TestDisplayCommands(unittest.TestCase):
 
     @patch("core.commands.display.get_current_module")
@@ -70,7 +71,9 @@ class TestDisplayCommands(unittest.TestCase):
     @patch("core.commands.display.get_current_module", return_value=None)
     @patch("core.commands.display.list_modules", return_value=["mod_alpha", "mod_beta"])
     @patch("core.commands.display.printc")
-    def test_search_keyword_matches(self, mock_printc, mock_list_modules, mock_get_current_module):
+    def test_search_keyword_matches(
+        self, mock_printc, mock_list_modules, mock_get_current_module
+    ):
         from core.commands.display import handle_search
 
         handle_search(["alpha"], {})
