@@ -139,7 +139,7 @@ class Module(BaseModule):
         full_output_path.mkdir(parents=True, exist_ok=True)
         error_log = output_path / subdir_name / f"error_urls-{timestamp}.txt"
 
-        #printc(f"DEBUG: {len(urls)}", level="debug")
+        # printc(f"DEBUG: {len(urls)}", level="debug")
         progress = tqdm(total=len(urls), desc="Taking screenshots")
         success_counter = [0]
         progress_lock = threading.Lock()

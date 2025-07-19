@@ -36,7 +36,7 @@ class Module(BaseModule):
 
     def run(self, shared_data):
         ssh_host = self.options.get("rhost").strip()
-        ssh_port = int(self.options.get("rport"))
+        ssh_port = int(self.options.get("rport") or 22)
         ssh_user = self.options.get("username").strip()
         ssh_password = self.options.get("password").strip()
 
@@ -74,7 +74,8 @@ class Module(BaseModule):
             ssh.close()
 
             # Share version data to other modules if neccessary
-            shared_data["sudo_version"] = parsed_sudo_version  # Shared Data
+            shared_data["pb_check_sudo_version"] = parsed_sudo_version  # Shared Data
+            shared_data["pb_check_sudo_version_str"] = sudo_version  # "1.9.9p0"
 
         except Exception as e:
             printc(f"Error: {e}", level="error")
@@ -82,6 +83,8 @@ class Module(BaseModule):
     @staticmethod
     def get_sudo_version(ssh):
         _, out, _ = ssh_exec(ssh, "sudo -V | head -n 1")
+        if not out:
+            return None
         match = re.search(r"Sudo version (\d+\.\d+\.\d+(?:p\d+)?)", out)
         return match.group(1) if match else None
 

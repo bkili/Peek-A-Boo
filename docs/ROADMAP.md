@@ -16,14 +16,14 @@
 ## Exploits
 
 - [ ] Refactor existing `exp_cve_2025_32463` to be fully config-agnostic.
-- [ ] Add module dependency checker before running exploits.
+- [x] ~~Add module dependency checker before running exploits.~~
 - [ ] Add optional post-exploitation plugin support.
 
 ## Tests
 
 - [ ] Add integration tests with a fake SSH server (e.g. `paramiko.ServerInterface`).
 - [ ] Add CLI history and command replay tests.
-- [x] M~~ock file-based config loading and saving in `test_config_ops.py`.~~
+- [x] ~~Mock file-based config loading and saving in `test_config_ops.py`.~~
 - [ ] Add unit test for `core/commands/module_ops.py`.
 - [ ] Test error propagation for missing module options in `run()`.
 
@@ -53,5 +53,3 @@
 - [ ] Add `peek-scan` command line mode for one-shot scanning.
 - [ ] Create plugin marketplace directory on GitHub.
 - [ ] Provide `setup.py` or `pyproject.toml` for package installation.
-
-✓

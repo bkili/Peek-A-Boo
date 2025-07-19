@@ -1,3 +1,4 @@
+# /modules/pb_check_sudo_cves.py
 import re
 from core.utils.cve_list import get_cve_list
 from modules.base import BaseModule
@@ -14,8 +15,12 @@ def is_vulnerable(target, affected_range):
         parts = re.split(r"[\.p]", ver_str)
         return tuple(map(int, parts + ["0"] * (4 - len(parts))))
 
+    if isinstance(target, str):
+        target = parse(target)
+
     lower = parse(affected_range[0])
     upper = parse(affected_range[1])
+
     return lower <= target <= upper
 
 
@@ -56,13 +61,15 @@ class Module(BaseModule):
 
     def run(self, shared_data):
         parsed_version = None
-        shared_ver = shared_data.get("sudo_version")
+        shared_ver = shared_data.get("pb_check_sudo_version", None)
 
         printc("PB_CHECK_SUDO_CVES", level="headline")
 
         if shared_ver:
             parsed_version = shared_ver
-            version_str = ".".join(map(str, shared_ver))
+            version_str = shared_data.get(
+                "pb_check_sudo_version_str", ".".join(map(str, shared_ver))
+            )
             printc(f"Using sudo version : {version_str}", level="info")
         else:
             version_str = self.options.get("version", "").strip()
@@ -109,4 +116,4 @@ class Module(BaseModule):
             )
             return
 
-        shared_data["sudo_vulnerable_cve"] = vulnerable
+        shared_data["pb_check_sudo_cves"] = vulnerable
