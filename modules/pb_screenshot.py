@@ -52,11 +52,11 @@ class Module(BaseModule):
     def requires(self):
         url = self.options.get("url", "").strip()
         input_file = self.options.get("input_file", "").strip()
-        wayback = self.options.get("wayback")
+        wayback = self.options.get("wayback").lower()
         if (
             url
             and (not input_file or not Path(input_file).exists())
-            and (wayback == "True")
+            and (wayback == "true")
         ):
             return ["pb_wayback"]
         return []

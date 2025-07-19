@@ -1,15 +1,15 @@
 import re
-from core.utils.cve_list import *
+from core.utils.cve_list import get_cve_list
 from modules.base import BaseModule
 from core.utils.formatter import printc
 
 
-def parse_version(self, version):
+def parse_version(version):
     parts = re.split(r"[\.p]", version)
     return tuple(map(int, parts + ["0"] * (4 - len(parts))))
 
 
-def is_vulnerable(self, target, affected_range):
+def is_vulnerable(target, affected_range):
     def parse(ver_str):
         parts = re.split(r"[\.p]", ver_str)
         return tuple(map(int, parts + ["0"] * (4 - len(parts))))
