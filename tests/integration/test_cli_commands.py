@@ -1,6 +1,13 @@
+import pytest
+import os  # noqa: F401
+import sys
 import subprocess
 
 
+@pytest.mark.skipif(
+    sys.platform.startswith("win") and not sys.stdin.isatty(),
+    reason="prompt_toolkit requires a real terminal on Windows",
+)
 def run_peekaboo_with_input(cmd_input):
     """
     Run the CLI with the given input string as if typed interactively.

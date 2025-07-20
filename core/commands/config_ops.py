@@ -18,7 +18,7 @@ def handle_save(args, shared_data):
             printc(f"Configuration saved to {filepath}", level="success")
         else:
             printc("Usage: save config <filename>", level="warn")
-    except:
+    except Exception:
         printc("No module selected. Use a module before saving config.", level="error")
         return
 
@@ -34,7 +34,8 @@ def handle_load(args, shared_data):
             module = get_current_module()
             if not module:
                 printc(
-                    "No module selected. Use a module before loading config.", level="warn"
+                    "No module selected. Use a module before loading config.",
+                    level="warn",
                 )
                 return
             filepath = Path("configs") / args[1]
@@ -47,5 +48,5 @@ def handle_load(args, shared_data):
             for k, v in config.items():
                 module.set_option(k, str(v))
             printc(f"Configuration loaded from {filepath}", level="success")
-    except:
+    except Exception:
         return
