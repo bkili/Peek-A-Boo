@@ -35,6 +35,7 @@ def handle_use(args, shared_data):
         shared_data["CURRENT_MODULE"] = instance
         printc(f"[+] Module selected: {module_name}", level="success")
     except Exception as e:
+        shared_data["CURRENT_MODULE"] = None
         printc(f"[!] Failed to import module '{module_name}': {e}", level="error")
 
 
@@ -103,4 +104,4 @@ def handle_reload(args, shared_data):
         mod.options_reload()
         printc(f"[{mod.name}] Options reloaded to default.", level="info")
     else:
-        printc("Reload not supported.", level="warn")
+        printc("No module found: reload not supported.", level="warn")

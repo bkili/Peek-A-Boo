@@ -182,10 +182,12 @@ Follow standard Python practices, ensure your module:
 - Uses shared_data when necessary
 - Includes logging via `printc`
 - Has meaningful `name`, `description`, and `category`
+
+**For more details, refer to the** [Peek-A-Boo Contributing Guide](CONTRIBUTING.md).
 ___
 ## Templates
 
-For further, please check:
+**For further, please check:** [Template Module](templates/pb_module_template.py)
 
-- [Template Module](templates/pb_module_template.py)
+
 

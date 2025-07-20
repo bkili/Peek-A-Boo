@@ -1,0 +1,159 @@
+import subprocess
+
+
+def run_peekaboo_with_input(cmd_input):
+    """
+    Run the CLI with the given input string as if typed interactively.
+    """
+    process = subprocess.Popen(
+        ["python", "main.py"],
+        stdin=subprocess.PIPE,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        text=True,
+    )
+    stdout, _ = process.communicate(input=cmd_input)
+    return stdout
+
+
+# CLI command tests for Peek-A-Boo
+# test unknown command
+def test_unknown_command():
+    output = run_peekaboo_with_input("foo\nexit\n")
+    assert "Unknown command: foo" in output
+
+
+# help command tests
+def test_help_command():
+    output = run_peekaboo_with_input("help\nexit\n")
+    assert "Available commands:" in output
+
+
+# exit command tests
+def test_exit_command():
+    output = run_peekaboo_with_input("exit\n")
+    assert "Exiting.." in output or output.endswith("\n")
+
+
+# clear command tests
+def test_clear_command():
+    output = run_peekaboo_with_input("clear\n")
+    assert (
+        "\n" in output or output == ""
+    )  # Clear command should produce an empty output
+
+
+# info command tests
+def test_info_no_module_selected():
+    output = run_peekaboo_with_input("info\nexit\n")
+    assert "No module selected." in output
+
+
+def test_info_explicit_module_info():
+    output = run_peekaboo_with_input("info pb_holehe_check_email\nexit\n")
+    assert "Module: pb_holehe_check_email" in output
+
+
+def test_info_after_use_command():
+    output = run_peekaboo_with_input("use pb_wayback\ninfo\nexit\n")
+    assert "Module: pb_wayback" in output
+
+
+def test_info_nonexistent_module():
+    output = run_peekaboo_with_input("info pb_foo\nexit\n")
+    assert "Error loading module: No module named 'modules.pb_foo'" in output
+
+
+# list command tests
+def test_list():
+    output = run_peekaboo_with_input("list\nexit\n")
+    assert "Available modules:" in output
+    assert "[utility]" in output  # Example category, adjust as needed
+    assert "[-] pb_screenshot" in output
+
+    assert "Available exploits:" in output
+    assert "[privilege_escalation]" in output  # Example category, adjust as needed
+    assert "[-] exp_cve_2025_32463" in output  # Example exploit, adjust as needed
+
+    assert "Available plugins:" in output
+
+
+def test_list_modules():
+    output = run_peekaboo_with_input("list modules\nexit\n")
+    assert "Available modules:" in output
+    assert "[utility]" in output  # Example category, adjust as needed
+    assert "[-] pb_scrape_keywords" in output
+
+
+def test_list_exploits():
+    output = run_peekaboo_with_input("list exploits\nexit\n")
+    assert "Available exploits:" in output
+    assert "[privilege_escalation]" in output  # Example category, adjust as needed
+    assert "[-] exp_cve_2025_32463" in output  # Example exploit, adjust as needed
+
+
+def test_list_plugins():
+    output = run_peekaboo_with_input("list plugins\nexit\n")
+    assert "Available plugins:" in output
+
+
+def test_list_all():
+    output = run_peekaboo_with_input("list\nexit\n")
+    assert "Available modules:" in output
+    assert "[utility]" in output  # Example category, adjust as needed
+    assert "[-] pb_screenshot" in output
+
+    assert "Available exploits:" in output
+    assert "[privilege_escalation]" in output  # Example category, adjust as needed
+    assert "[-] exp_cve_2025_32463" in output  # Example exploit, adjust as needed
+
+    assert "Available plugins:" in output
+
+
+# save command tests
+def test_save_no_module():
+    output = run_peekaboo_with_input("save config test\nexit\n")
+    assert "No module selected. Use a module before saving config." in output
+
+
+def test_save_config():
+    output = run_peekaboo_with_input(
+        "use pb_wayback\n"
+        "set url https://www.example.com\n"
+        "set output_directory test_dir\n"
+        "save config test_cli_commands\nexit\n"
+    )
+    assert "Configuration saved to configs/test_cli_commands" in output
+
+
+# load command tests
+def test_load_no_module_config():
+    output = run_peekaboo_with_input("load config test_cli_commands\nexit\n")
+    assert "No module selected. Use a module before loading config." in output
+
+
+def test_load_config():
+    output = run_peekaboo_with_input(
+        "use pb_wayback\nload config test_cli_commands\nshow options\nexit\n"
+    )
+    assert "Configuration loaded from configs/test_cli_commands" in output
+    assert "https://www.example.com" in output
+    assert "test_dir" in output
+
+
+def test_load_nonexistent_config():
+    output = run_peekaboo_with_input(
+        "use pb_wayback\nload config nonexistent\nshow options\nexit\n"
+    )
+    assert "File not found." in output
+
+
+# reload command tests
+def test_reload_no_module():
+    output = run_peekaboo_with_input("reload\nexit\n")
+    assert "No module found: reload not supported." in output
+
+
+def test_reload():
+    output = run_peekaboo_with_input("use pb_wayback\nreload\nexit\n")
+    assert "Options reloaded to default." in output
