@@ -1,3 +1,4 @@
+import re
 import pytest
 import os  # noqa: F401
 import sys
@@ -166,3 +167,83 @@ def test_reload_no_module():
 def test_reload():
     output = run_peekaboo_with_input("use pb_wayback\nreload\nexit\n")
     assert "Options reloaded to default." in output
+
+
+# run command tests
+def test_run_no_module():
+    output = run_peekaboo_with_input("run\nexit\n")
+    assert "No module selected." in output
+
+
+def test_run_module():
+    output = run_peekaboo_with_input(
+        "use pb_phone_lookup\nset phone_number 911\nrun\nexit"
+    )
+    assert "Missing or invalid default region." in output
+
+
+# search command tests
+def test_search_no_query():
+    output = run_peekaboo_with_input("search\nexit\n")
+    assert "Usage: search <keyword>" in output
+
+
+def test_search_keyword():
+    output = run_peekaboo_with_input("search pb_screenshot\nexit\n")
+    assert "- pb_screenshot" in output
+
+
+# set command tests
+def test_set_no_module():
+    output = run_peekaboo_with_input("set option value\nexit\n")
+    assert "No module selected." in output
+
+
+def test_set_option():
+    output = run_peekaboo_with_input(
+        "use pb_wayback\nset url https://www.example.com\nshow options\nexit\n"
+    )
+    assert "https://www.example.com" in output
+
+
+def test_set_invalid_option():
+    output = run_peekaboo_with_input("use pb_wayback\nset invalid_option value\nexit\n")
+    assert "invalid_option set to value" in output
+
+
+# show command tests
+def test_show_no_module():
+    output = run_peekaboo_with_input("show\nexit\n")
+    assert "No module selected." in output
+
+
+def test_show_options():
+    output = run_peekaboo_with_input("use pb_wayback\nshow options\nexit\n")
+    assert "Option" in output
+    assert "url" in output
+    assert "output_directory" in output
+
+
+# show summary command tests
+def test_show_summary_no_module():
+    output = run_peekaboo_with_input("show summary\nexit\n")
+    assert "No module selected." in output
+
+
+def test_show_summary_no_data():
+    output = run_peekaboo_with_input("use pb_wayback\nshow summary\nexit\n")
+    assert "No summary available." in output
+
+
+# use command tests
+def test_use_no_module():
+    output = run_peekaboo_with_input("use\nexit\n")
+    assert "Usage: use <module_name>" in output
+
+
+def test_use_nonexistent_module():
+    output = run_peekaboo_with_input("use pb_nonexistent\nexit\n")
+    assert re.search(
+        r"Failed to import module 'pb_nonexistent': No module named\s+'modules\.pb_nonexistent'",
+        output
+    )
