@@ -1,5 +1,6 @@
 # /core/cli.py
 import logging
+from readline import add_history
 
 from core.commands import core, module_ops, config_ops, display, option_ops  # noqa
 from core.completer import SmartCompleter
@@ -40,6 +41,8 @@ def start_cli():
         handler = COMMAND_HANDLERS.get(command)
         if handler:
             handler(args, shared_data)
+            with open(".pb_history", "a") as hist_file:
+                hist_file.write(cmd.strip() + "\n")
             if command == "use" and args and shared_data.get("CURRENT_MODULE"):
                 cmd_module_name = args[0]
             completer.update_nested()

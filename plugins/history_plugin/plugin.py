@@ -12,4 +12,4 @@ class Plugin(Plugin):
         def history_handler(args, shared_data):
             print("[*] Command history feature (placeholder)")
 
-        return {"history": history_handler}
+        return {"history2": history_handler}
