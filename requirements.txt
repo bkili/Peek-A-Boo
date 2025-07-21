@@ -7,3 +7,4 @@ phonenumbers~=9.0.9
 paramiko~=3.5.1
 prompt_toolkit~=3.0.51
 holehe
+pyyaml

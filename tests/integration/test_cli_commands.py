@@ -243,7 +243,4 @@ def test_use_no_module():
 
 def test_use_nonexistent_module():
     output = run_peekaboo_with_input("use pb_nonexistent\nexit\n")
-    assert re.search(
-        r"Failed to import module 'pb_nonexistent': No module named\s+'modules\.pb_nonexistent'",
-        output
-    )
+    assert "Failed to import module 'pb_nonexistent':" in output

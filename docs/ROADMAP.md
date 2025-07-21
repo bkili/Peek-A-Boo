@@ -4,6 +4,9 @@
 - [ ] Implement logging configuration system (`core/logging.py`).
 - [ ] Add persistent session state saving and restoration.
 - [ ] Improve exception handling across all core command handlers.
+- [ ] Add support for custom command aliases.
+- [ ] Implement a command history feature with search capabilities.
+- [ ] Add global settings management (e.g. `config.json`).
 
 ## Modules & Plugins
 
@@ -22,17 +25,18 @@
 ## Tests
 
 - [ ] Add integration tests with a fake SSH server (e.g. `paramiko.ServerInterface`).
+- [x] ~~Add integration tests for cli commands.~~
 - [ ] Add CLI history and command replay tests.
 - [x] ~~Mock file-based config loading and saving in `test_config_ops.py`.~~
 - [ ] Add unit test for `core/commands/module_ops.py`.
-- [ ] Test error propagation for missing module options in `run()`.
+- [x] ~~Test error propagation for missing module options in `run()`.~~
 
 ## GitHub Actions & CI/CD
 
 - [x] ~~Add test matrix for Python 3.9, 3.10, 3.11 on Ubuntu, macOS, and Windows.~~
 - [ ] Cache virtualenv between CI runs.
-- [ ] Upload test coverage reports (e.g. Codecov or Coveralls).
-- [ ] Add `lint` job using `ruff` and `black`.
+- [x] ~~Upload test coverage reports.~~
+- [x] ~~Add `lint` job using `ruff` and/or `black`.~~
 
 ## Documentation
 

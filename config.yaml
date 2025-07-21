@@ -1,0 +1,5 @@
+# Global Configuration File
+# This file contains global settings for the application.
+
+ENABLED_PLUGINS:
+  - history_plugin

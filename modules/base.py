@@ -1,4 +1,4 @@
-# modules/base.py
+# modules/base_plugin.py
 
 
 class BaseModule:
