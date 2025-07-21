@@ -1,5 +1,22 @@
 # Global Configuration File
 # This file contains global settings for the application.
 
+# You can modify these settings to add or remove plugins.
 ENABLED_PLUGINS:
-  - history_plugin
+#  - history_plugin
+
+# The following settings are for the history.
+HISTORY:
+  # Enable or disable the history feature.
+  # It's case-sensitive, so use 'true' or 'false'.
+  HISTORY_ENABLED: true
+
+  # Obfuscation settings for history entries.
+  # It's case-sensitive, so use 'true' or 'false'.
+  OBFUSCATE_VALUES_IN_HISTORY: true
+
+  # The path to the history file.
+  HISTORY_FILE_PATH: ".pb_history"
+
+  # The maximum number of history entries to keep.
+  MAX_ENTRIES: 1000

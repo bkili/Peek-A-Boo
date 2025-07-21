@@ -27,35 +27,22 @@ def handle_clear(args, shared_data):
 
 @register_command("history")
 def handle_history(args, shared_data):
-    if args and args[0] == "clear":
-        path = ".pb_history"
-        if os.path.exists(path):
-            try:
-                os.remove(path)
-                printc("Command history cleared.", level="success")
-            except Exception as e:
-                printc(f"[!] Failed to clear history: {e}", level="error")
-        else:
-            printc("No command history to clear.", level="warn")
+    path = ".pb_history"
+    if not os.path.exists(path):
+        printc("No command history found.", level="warn")
         return
-
-    else:
-        path = ".pb_history"
-        if not os.path.exists(path):
-            printc("No command history found.", level="warn")
-            return
-
-        try:
-            with open(path, "r") as file:
-                history = file.read().strip()
-                if history:
-                    printc("Command History:", level="selection")
-                    for line in history.splitlines():
-                        printc(f"{line}", level="info")
-                else:
-                    printc("No command history found.", level="warn")
-        except Exception as e:
-            printc(f"[!] Failed to read history: {e}", level="error")
+    
+    try:
+        with open(path, "r") as file:
+            history = file.read().strip()
+            if history:
+                printc("Command History:", level="selection")
+                for line in history.splitlines():
+                    printc(f"{line}", level="info")
+            else:
+                printc("No command history found.", level="warn")
+    except Exception as e:
+        printc(f"[!] Failed to read history: {e}", level="error")
 
 
 @register_command("debug")

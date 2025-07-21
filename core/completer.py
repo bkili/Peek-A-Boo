@@ -2,8 +2,10 @@ from pathlib import Path
 from prompt_toolkit.completion import Completer, NestedCompleter, PathCompleter
 from core.utils.listing import list_modules, list_plugins, list_exploits
 from core.state import get_current_module
+from core.config import load_global_config
 from prompt_toolkit.document import Document
 
+global_config = load_global_config()
 
 def get_config_path_completions(text, complete_event):
     config_path = Path("configs") / text  # start from configs/
@@ -42,7 +44,8 @@ class SmartCompleter(Completer):
                 "load": {"config": None, "module": None},
                 "show": {"options": None, "summary": None},
                 "set": {opt: None for opt in current.options} if current else {},
-                "history": {"clear": None},
+                "history": None,
+                "clear": {"history": None},
             }
         )
 
