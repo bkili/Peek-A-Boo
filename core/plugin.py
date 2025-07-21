@@ -12,6 +12,8 @@ loaded_plugins = {}
 
 
 def load_plugins(plugin_names, cli_context):
+    if plugin_names is None:
+        return {}
     for name in plugin_names:
         plugin_path = os.path.join(PLUGINS_DIR, name, "plugin.py")
         if not os.path.exists(plugin_path):
