@@ -1,4 +1,3 @@
-import re
 import pytest
 import os  # noqa: F401
 import sys
