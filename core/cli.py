@@ -19,6 +19,7 @@ OBFUSCATE_VALUES_IN_HISTORY = history_settings.get("OBFUSCATE_VALUES_IN_HISTORY"
 MAX_ENTRIES = history_settings.get("MAX_ENTRIES", 1000)
 HISTORY_FILE_PATH = history_settings.get("HISTORY_FILE_PATH", ".pb_history")
 
+
 def start_cli():
     shared_data = {}
     cmd_module_name = ""

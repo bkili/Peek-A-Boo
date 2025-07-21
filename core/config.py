@@ -16,7 +16,9 @@ def load_global_config(path: str = DEFAULT_CONFIG_PATH) -> dict:
     if not os.path.exists(path):
         with open(path, "w") as f:
             yaml.dump(DEFAULT_CONFIG, f, default_flow_style=False)
-        printc(f"[!] Configuration file not found. Created default at {path}", level="info")
+        printc(
+            f"[!] Configuration file not found. Created default at {path}", level="info"
+        )
 
     try:
         with open(path, "r") as file:

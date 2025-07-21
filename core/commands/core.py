@@ -31,7 +31,7 @@ def handle_history(args, shared_data):
     if not os.path.exists(path):
         printc("No command history found.", level="warn")
         return
-    
+
     try:
         with open(path, "r") as file:
             history = file.read().strip()

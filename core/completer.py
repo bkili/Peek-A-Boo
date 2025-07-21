@@ -7,6 +7,7 @@ from prompt_toolkit.document import Document
 
 global_config = load_global_config()
 
+
 def get_config_path_completions(text, complete_event):
     config_path = Path("configs") / text  # start from configs/
     completer = PathCompleter(
