@@ -12,12 +12,12 @@ from prompt_toolkit.styles import Style
 style = Style.from_dict({"prompt": "#00ff00 bold"})
 
 settings = get_global_config()
-
 history_settings = settings.get("HISTORY", {})
+
 HISTORY_ENABLED = history_settings.get("HISTORY_ENABLED", True)
 OBFUSCATE_VALUES_IN_HISTORY = history_settings.get("OBFUSCATE_VALUES_IN_HISTORY", False)
 MAX_ENTRIES = history_settings.get("MAX_ENTRIES", 1000)
-HISTORY_FILE_PATH = history_settings.get("HISTORY_FILE_PATH", ".pb_history")
+HISTORY_PATH = ".pb_history"
 
 
 def start_cli():
@@ -61,7 +61,21 @@ def start_cli():
                     else:
                         hist_line = cmd.strip()
 
-                    hist_file.write(hist_line + "\n")
+                    # Limit history entries
+                    # Read current history
+                    with open(HISTORY_PATH, "r") as f:
+                        history_lines = f.readlines()
+
+                    # Append new line
+                    history_lines.append(hist_line + "\n")
+
+                    # Trim if lines > MAX_ENTRIES
+                    if len(history_lines) > MAX_ENTRIES:
+                        history_lines = history_lines[-MAX_ENTRIES:]
+
+                    # Write trimmed history back
+                    with open(HISTORY_PATH, "w") as f:
+                        f.writelines(history_lines)
 
             # Clear the command history if the command is 'clear history'
             if command == "clear" and args and args[0] == "history":
