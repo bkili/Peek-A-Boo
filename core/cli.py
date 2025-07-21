@@ -40,7 +40,9 @@ def start_cli():
         handler = COMMAND_HANDLERS.get(command)
         if handler:
             handler(args, shared_data)
-            if command == "use" and args:
+            with open(".pb_history", "a") as hist_file:
+                hist_file.write(cmd.strip() + "\n")
+            if command == "use" and args and shared_data.get("CURRENT_MODULE"):
                 cmd_module_name = args[0]
             completer.update_nested()
         else:

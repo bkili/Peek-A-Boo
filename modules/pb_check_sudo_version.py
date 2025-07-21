@@ -1,6 +1,6 @@
 # /modules/pb_check_sudo_version.py
 import re
-from core.utils.ssh_handler import *
+from core.utils.ssh_handler import create_ssh_client, ssh_exec
 from modules.base import BaseModule
 from core.utils.formatter import printc
 
@@ -10,7 +10,10 @@ class Module(BaseModule):
         super().__init__()
 
         self.name = "pb_check_sudo_version"
-        self.description = "Check and parse sudo version of the target system via SSH, and share result with other modules."
+        self.description = (
+            "Check and parse sudo version of the target system via SSH,"
+            " and share result with other modules."
+        )
         self.category = "recon"
         self.author = "022NN"
         self.author_email = "n0220n@proton.me"
@@ -26,7 +29,8 @@ class Module(BaseModule):
             "password": "",
         }
 
-        # List of options that are considered required (shown in CLI with 'yes' under Required)
+        # List of options that are considered required
+        # (shown in CLI with 'yes' under Required)
         self.required_options = ["rhost", "username", "password"]
 
         self.options = self.default_options.copy()

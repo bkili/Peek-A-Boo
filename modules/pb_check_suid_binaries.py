@@ -2,7 +2,7 @@
 
 from pathlib import Path
 from modules.base import BaseModule
-from core.utils.ssh_handler import *
+from core.utils.ssh_handler import create_ssh_client, ssh_exec
 from core.utils.formatter import printc
 
 GTFObins = {
@@ -253,7 +253,10 @@ class Module(BaseModule):
         super().__init__()
 
         self.name = "pb_check_suid_binaries"
-        self.description = "Enumerate SUID binaries on the target system and check for known GTFOBins matches."
+        self.description = (
+            "Enumerate SUID binaries on the target system "
+            "and check for known GTFOBins matches."
+        )
         self.category = "recon"
         self.author = "022NN"
         self.author_email = "n0220n@proton.me"
@@ -269,7 +272,8 @@ class Module(BaseModule):
             "password": "",
         }
 
-        # List of options that are considered required (shown in CLI with 'yes' under Required)
+        # List of options that are considered required
+        # (shown in CLI with 'yes' under Required)
         self.required_options = ["rhost", "username", "password"]
 
         self.options = self.default_options.copy()

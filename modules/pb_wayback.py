@@ -17,7 +17,10 @@ class Module(BaseModule):
     def __init__(self):
         super().__init__()
         self.name = "pb_wayback"
-        self.description = "Queries Wayback Machine to collect historical URLs for a given target domain."
+        self.description = (
+            "Queries Wayback Machine to collect historical "
+            "URLs for a given target domain."
+        )
         self.category = "recon"
         self.author = "022NN"
         self.author_email = "n0220n@proton.me"
@@ -39,7 +42,8 @@ class Module(BaseModule):
 
         printc(f"[{self.name}] Running Wayback URL collection...", level="module")
         printc(
-            f"[{self.name}] Collecting links from Wayback Machine for: {colorize(target_url, 'cyan', 'underline')}",
+            f"[{self.name}] Collecting links from Wayback Machine for: "
+            f"{colorize(target_url, 'cyan', 'underline')}",
             level="info",
         )
 

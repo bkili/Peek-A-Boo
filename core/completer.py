@@ -42,6 +42,7 @@ class SmartCompleter(Completer):
                 "load": {"config": None, "module": None},
                 "show": {"options": None, "summary": None},
                 "set": {opt: None for opt in current.options} if current else {},
+                "history": {"clear": None},
             }
         )
 
