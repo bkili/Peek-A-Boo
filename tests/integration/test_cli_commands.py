@@ -2,12 +2,16 @@ import pytest
 import os  # noqa: F401
 import sys
 import subprocess
-
+import re
 
 pytestmark = pytest.mark.skipif(
     sys.platform.startswith("win") and not sys.stdin.isatty(),
     reason="prompt_toolkit requires a real terminal on Windows",
 )
+
+
+def strip_ansi(text):
+    return re.sub(r"\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])", "", text)
 
 
 def run_peekaboo_with_input(cmd_input):
@@ -243,3 +247,16 @@ def test_use_no_module():
 def test_use_nonexistent_module():
     output = run_peekaboo_with_input("use pb_nonexistent\nexit\n")
     assert "Failed to import module 'pb_nonexistent':" in output
+
+
+# history command tests
+def test_clear_history():
+    output = run_peekaboo_with_input("clear history\necho wait\nexit\n")
+    assert "Command history cleared." in output
+
+
+def test_history():
+    output = run_peekaboo_with_input("clear\nhistory\nexit\n")
+    clean_output = strip_ansi(output)
+    assert "Command History:" in clean_output
+    assert "clear" in output

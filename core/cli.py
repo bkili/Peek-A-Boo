@@ -1,5 +1,6 @@
 # /core/cli.py
 import logging
+import os
 
 from core.commands import core, module_ops, config_ops, display, option_ops  # noqa
 from core.completer import SmartCompleter
@@ -50,32 +51,7 @@ def start_cli():
         if handler:
             handler(args, shared_data)
 
-            if HISTORY_ENABLED:
-                with open(".pb_history", "a") as hist_file:
-                    if OBFUSCATE_VALUES_IN_HISTORY and command == "set" and args:
-                        # Obfuscate set command values
-                        obfuscated_args = [args[0]]  # key is visible
-                        if len(args) > 1:
-                            obfuscated_args += ["********"]  # hide value
-                        hist_line = f"{command} {' '.join(obfuscated_args)}"
-                    else:
-                        hist_line = cmd.strip()
-
-                    # Limit history entries
-                    # Read current history
-                    with open(HISTORY_PATH, "r") as f:
-                        history_lines = f.readlines()
-
-                    # Append new line
-                    history_lines.append(hist_line + "\n")
-
-                    # Trim if lines > MAX_ENTRIES
-                    if len(history_lines) > MAX_ENTRIES:
-                        history_lines = history_lines[-MAX_ENTRIES:]
-
-                    # Write trimmed history back
-                    with open(HISTORY_PATH, "w") as f:
-                        f.writelines(history_lines)
+            write_history_entry(command, cmd, args)
 
             # Clear the command history if the command is 'clear history'
             if command == "clear" and args and args[0] == "history":
@@ -90,3 +66,33 @@ def start_cli():
         else:
             printc(f"Unknown command: {command}", level="error")
             logging.warning(f"Unknown command: {command}")
+
+
+# Write command to history
+def write_history_entry(command, cmd, args):
+    if HISTORY_ENABLED:
+        # Ensure the file exists
+        if not os.path.exists(HISTORY_PATH):
+            with open(HISTORY_PATH, "w") as f:
+                f.write("")
+
+        # Obfuscate if needed
+        if OBFUSCATE_VALUES_IN_HISTORY and command == "set" and args:
+            obfuscated_args = [args[0]]
+            if len(args) > 1:
+                obfuscated_args += ["********"]
+            hist_line = f"{command} {' '.join(obfuscated_args)}"
+        else:
+            hist_line = cmd.strip()
+
+        # Read, append, trim, and write back
+        with open(HISTORY_PATH, "r") as f:
+            history_lines = f.readlines()
+
+        history_lines.append(hist_line + "\n")
+
+        if len(history_lines) > MAX_ENTRIES:
+            history_lines = history_lines[-MAX_ENTRIES:]
+
+        with open(HISTORY_PATH, "w") as f:
+            f.writelines(history_lines)

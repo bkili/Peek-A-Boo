@@ -13,7 +13,7 @@ HISTORY:
 
   # Obfuscation settings for history entries.
   # If set to true, sensitive values in history entries will be obfuscated.
-  # Example: If a history entry contains a option with a value of 'password123',
+  # Example: If a history entry contains an option with a value of 'password123',
   # it will be stored as '********' in the history.
   # set password password123 => history: set password ********
   # It's case-sensitive, so use 'true' or 'false'.

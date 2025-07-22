@@ -1,12 +1,12 @@
 ## Core Improvements
 
-- [ ] Refactor `core/cli.py` for better modularity and input validation.
+- [x] ~~Refactor `core/cli.py` for better modularity and input validation.~~
 - [ ] Implement logging configuration system (`core/logging.py`).
 - [ ] Add persistent session state saving and restoration.
 - [ ] Improve exception handling across all core command handlers.
 - [ ] Add support for custom command aliases.
 - [ ] Implement a command history feature with search capabilities.
-- [ ] Add global settings management (e.g. `config.json`).
+- [x] ~~Add global settings management (e.g. `config.yaml`).~~
 
 ## Modules & Plugins
 
@@ -47,7 +47,7 @@
 
 ## CLI Enhancements
 
-- [ ] Add `history` command to review previous inputs.
+- [x] ~~Add `history` command to review previous inputs.~~
 - [ ] Add `alias` system for frequently used commands.
 - [x] ~~Improve `set` command with auto-completion for option names.~~
 - [x] ~~Add `reload` command to reload current module without restarting CLI.~~
