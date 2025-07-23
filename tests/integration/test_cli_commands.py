@@ -1,5 +1,5 @@
 import pytest
-import os  # noqa: F401
+import os
 import sys
 import subprocess
 import re
