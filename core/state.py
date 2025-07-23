@@ -1,3 +1,4 @@
+# core/state.py
 CURRENT_MODULE = None
 _global_config = {}
 
@@ -18,3 +19,12 @@ def set_global_config(cfg: dict):
 
 def get_global_config():
     return _global_config
+
+
+def reload_global_config(config_path):
+    """Force reload the config.yaml file and update the global config."""
+    from core.config_ops import load_global_config
+
+    new_config = load_global_config(config_path)
+    set_global_config(new_config)
+    return new_config

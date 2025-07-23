@@ -2,12 +2,29 @@ import pytest
 import os  # noqa: F401
 import sys
 import subprocess
+import re
+import shutil
 
 
 pytestmark = pytest.mark.skipif(
     sys.platform.startswith("win") and not sys.stdin.isatty(),
     reason="prompt_toolkit requires a real terminal on Windows",
 )
+
+
+@pytest.fixture(autouse=True, scope="session")
+def isolate_test_config_and_history(tmp_path_factory):
+    test_dir = tmp_path_factory.mktemp("test_env")
+    sys.stderr.write(f"[DEBUG] Test dir: {test_dir}\n")
+    os.environ["PB_CONFIG_PATH"] = str(test_dir / "test_config.yaml")
+    os.environ["PB_HISTORY_PATH"] = str(test_dir / "test_history")
+    yield
+    del os.environ["PB_CONFIG_PATH"]
+    del os.environ["PB_HISTORY_PATH"]
+    shutil.rmtree(test_dir)
+
+def strip_ansi(text):
+    return re.sub(r"\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])", "", text)
 
 
 def run_peekaboo_with_input(cmd_input):
@@ -26,6 +43,11 @@ def run_peekaboo_with_input(cmd_input):
 
 
 # CLI command tests for Peek-A-Boo
+def test_custom_paths_are_used():
+    assert "test_config.yaml" in os.environ["PB_CONFIG_PATH"]
+    assert "test_history" in os.environ["PB_HISTORY_PATH"]
+
+
 # test unknown command
 def test_unknown_command():
     output = run_peekaboo_with_input("foo\nexit\n")
@@ -243,3 +265,21 @@ def test_use_no_module():
 def test_use_nonexistent_module():
     output = run_peekaboo_with_input("use pb_nonexistent\nexit\n")
     assert "Failed to import module 'pb_nonexistent':" in output
+
+
+# history command tests
+def test_clear_history():
+    output = run_peekaboo_with_input("clear history\necho wait\nexit\n")
+    assert "Command history cleared." in output
+
+
+def test_history():
+    run_peekaboo_with_input("use pb_wayback\nset url https://a.com\nexit\n")
+    output = run_peekaboo_with_input("history\nexit\n")
+    clean_output = strip_ansi(output)
+    assert "Command History:" in clean_output
+
+
+def test_alias():
+    output = run_peekaboo_with_input("alias la = list all\nl\nexit\n")
+    assert "Alias 'la: list all' added to config." in output

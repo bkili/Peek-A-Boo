@@ -1,4 +1,4 @@
-from core.config import get_global_config as load_config
+from core.config_ops import get_global_config as load_config
 from core.plugin import load_plugins
 from core.cli import start_cli
 from core.registry import register_command

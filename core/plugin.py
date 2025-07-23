@@ -56,6 +56,6 @@ def load_plugins(plugin_names, cli_context):
 
             loaded_plugins[name] = instance
             printc(f"[✓] Loaded plugin: {name}", level="success")
-            return loaded_plugins
         except Exception as e:
             printc(f"[!] Plugin '{name}' failed to initialize: {e}", level="error")
+    return loaded_plugins
