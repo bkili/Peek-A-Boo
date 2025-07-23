@@ -7,7 +7,8 @@ if ! pre-commit run --config tests/tools/.pre-commit-config.yaml --all-files; th
 fi
 
 echo "[*] Running unit tests with pytest..."
-if ! PYTHONPATH=. pytest tests; then
+PYTHONPATH=$(pwd)
+if ! PYTHONPATH=$(pwd) pytest tests; then
   echo "[!] Unit tests failed. Please fix the errors before committing."
   exit 1
 fi
