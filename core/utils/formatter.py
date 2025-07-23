@@ -5,9 +5,11 @@ from tqdm import tqdm
 
 console = Console()
 
+
 def printc(message, level: str = "info", use_tqdm: bool = False):
     """
-    Print colored messages using `rich`. Optionally write through tqdm if progress bar is active.
+    Print colored messages using `rich`.
+    Optionally write through tqdm if progress bar is active.
     Accepts both strings and Text objects.
     """
     style_map = {
@@ -20,7 +22,7 @@ def printc(message, level: str = "info", use_tqdm: bool = False):
         "module": "bold blue",
         "selection": "bold yellow",
         "headline": "bold underline cyan",
-        "url": "blue"
+        "url": "blue",
     }
     style = style_map.get(level, "white")
 
@@ -32,6 +34,7 @@ def printc(message, level: str = "info", use_tqdm: bool = False):
         tqdm.write(capture.get())  # Preserve rich formatting
     else:
         console.print(text)
+
 
 def colorize(content: str, color: str = "cyan", style: str = "") -> Text:
     """

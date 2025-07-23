@@ -1,15 +1,19 @@
 # /modules/pb_check_sudo_version.py
 import re
-from core.utils.ssh_handler import *
+from core.utils.ssh_handler import create_ssh_client, ssh_exec
 from modules.base import BaseModule
 from core.utils.formatter import printc
+
 
 class Module(BaseModule):
     def __init__(self):
         super().__init__()
 
         self.name = "pb_check_sudo_version"
-        self.description = "Check and parse sudo version of the target system via SSH, and share result with other modules."
+        self.description = (
+            "Check and parse sudo version of the target system via SSH,"
+            " and share result with other modules."
+        )
         self.category = "recon"
         self.author = "022NN"
         self.author_email = "n0220n@proton.me"
@@ -19,13 +23,14 @@ class Module(BaseModule):
 
         # Default options for the module
         self.default_options = {
-            "rhost" : "",
-            "rport" : "22",
-            "username" : "",
-            "password" : "",
+            "rhost": "",
+            "rport": "22",
+            "username": "",
+            "password": "",
         }
 
-        # List of options that are considered required (shown in CLI with 'yes' under Required)
+        # List of options that are considered required
+        # (shown in CLI with 'yes' under Required)
         self.required_options = ["rhost", "username", "password"]
 
         self.options = self.default_options.copy()
@@ -35,7 +40,7 @@ class Module(BaseModule):
 
     def run(self, shared_data):
         ssh_host = self.options.get("rhost").strip()
-        ssh_port = int(self.options.get("rport"))
+        ssh_port = int(self.options.get("rport") or 22)
         ssh_user = self.options.get("username").strip()
         ssh_password = self.options.get("password").strip()
 
@@ -54,7 +59,7 @@ class Module(BaseModule):
 
             # Check sudo version
             try:
-                printc(f"[*] Trying to check sudo version ...", level="info")
+                printc("[*] Trying to check sudo version ...", level="info")
                 sudo_version = self.get_sudo_version(ssh)
             except Exception as e:
                 printc(f"[!] Failed to check sudo version: {e}", level="error")
@@ -73,17 +78,21 @@ class Module(BaseModule):
             ssh.close()
 
             # Share version data to other modules if neccessary
-            shared_data["sudo_version"] = parsed_sudo_version   # Shared Data
+            shared_data["pb_check_sudo_version"] = parsed_sudo_version  # Shared Data
+            shared_data["pb_check_sudo_version_str"] = sudo_version  # "1.9.9p0"
 
         except Exception as e:
             printc(f"Error: {e}", level="error")
 
-    def get_sudo_version(self, ssh):
+    @staticmethod
+    def get_sudo_version(ssh):
         _, out, _ = ssh_exec(ssh, "sudo -V | head -n 1")
+        if not out:
+            return None
         match = re.search(r"Sudo version (\d+\.\d+\.\d+(?:p\d+)?)", out)
         return match.group(1) if match else None
 
-    def parse_version(self, version):
+    @staticmethod
+    def parse_version(version):
         parts = re.split(r"[\.p]", version)
-        return tuple(map(int, parts + ['0'] * (4 - len(parts))))
-
+        return tuple(map(int, parts + ["0"] * (4 - len(parts))))

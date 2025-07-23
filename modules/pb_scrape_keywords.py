@@ -1,9 +1,10 @@
-#/modules/pb_scrape_keywords.py
+# /modules/pb_scrape_keywords.py
 import requests
 from modules.base import BaseModule
 from pathlib import Path
 from core.utils.formatter import printc, colorize
 from rich.text import Text
+
 
 def normalize_url(u):
     if not u.startswith("http://") and not u.startswith("https://"):
@@ -16,7 +17,10 @@ class Module(BaseModule):
         super().__init__()
 
         self.name = "pb_scrape_keywords"
-        self.description = "Scrapes single or multiple web pages to detect specific keywords in raw HTML content."
+        self.description = (
+            "Scrapes single or multiple web pages "
+            "to detect specific keywords in raw HTML content."
+        )
         self.category = "utility"
         self.author = "022NN"
         self.author_email = "n0220n@proton.me"
@@ -25,13 +29,10 @@ class Module(BaseModule):
         self.version = "0.0.1"
 
         # Default options for the module
-        self.default_options = {
-            "url": "",
-            "input_file" : "",
-            "keywords" : ""
-        }
+        self.default_options = {"url": "", "input_file": "", "keywords": ""}
 
-        # List of options that are considered required (shown in CLI with 'yes' under Required)
+        # List of options that are considered required
+        # (shown in CLI with 'yes' under Required)
         self.required_options = ["url", "keywords"]
 
         self.options = self.default_options.copy()
@@ -47,10 +48,14 @@ class Module(BaseModule):
         keywords = [k.strip() for k in keywords_raw.split(",") if k.strip()]
 
         if url and input_file:
-            printc("Error: Provide either 'url' or 'input_file', not both.", level="error")
+            printc(
+                "Error: Provide either 'url' or 'input_file', not both.", level="error"
+            )
             return
         if not url and not input_file:
-            printc("Error: You must provide either 'url' or 'input_file'.", level="error")
+            printc(
+                "Error: You must provide either 'url' or 'input_file'.", level="error"
+            )
             return
         if not keywords:
             printc("Error: No keywords provided.", level="error")
@@ -75,8 +80,12 @@ class Module(BaseModule):
                 for line in lines:
                     for keyword in keywords:
                         if keyword in line.lower():
-                            msg = Text(f"[+] ") + colorize(u, "cyan") + Text(" contains ") + colorize(keyword, "green",
-                                                                                                      "bold")
+                            msg = (
+                                Text("[+] ")
+                                + colorize(u, "cyan")
+                                + Text(" contains ")
+                                + colorize(keyword, "green", "bold")
+                            )
                             printc(msg)
                             printc("  " + line.strip(), level="info")
                             matches_found = True

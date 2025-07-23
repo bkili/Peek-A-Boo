@@ -1,8 +1,14 @@
 # core/commands/display.py
 from core.registry import register_command
 from core.utils.formatter import printc
-from core.utils.listing import list_modules_by_category, list_plugins_by_category, list_modules, list_exploits_by_category
+from core.utils.listing import (
+    list_modules_by_category,
+    list_plugins_by_category,
+    list_modules,
+    list_exploits_by_category,
+)
 from core.state import get_current_module
+
 
 @register_command("show")
 def handle_show(args, shared_data):
@@ -27,6 +33,7 @@ def handle_show(args, shared_data):
         else:
             printc("No summary available.", level="warn")
 
+
 @register_command("list")
 def handle_list(args, shared_data):
     def print_categorized(title, data):
@@ -50,6 +57,7 @@ def handle_list(args, shared_data):
         print_categorized("Available plugins:", list_plugins_by_category())
     elif args[0] in ("exploits", "exploit"):
         print_categorized("Available exploits:", list_exploits_by_category())
+
 
 @register_command("search")
 def handle_search(args, shared_data):

@@ -1,15 +1,25 @@
 # core/utils/ssh_handler.py
 import paramiko
 
+
 def create_ssh_client(host, port, username, password):
     ssh = paramiko.SSHClient()
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+
     try:
-        ssh.connect(host, port=port, username=username, password=password)
+        ssh.connect(hostname=host, port=port, username=username, password=password)
         return ssh
+
     except Exception as e:
-        print(f"[ssh_handler] Connection failed : {e}")
-        return None
+        if "Authentication failed" in str(e):
+            raise ValueError("SSH authentication failed. Check your credentials.")
+        elif "No route to host" in str(e):
+            raise ConnectionError("Could not connect to the host. Check the network.")
+        elif "timed out" in str(e):
+            raise TimeoutError("SSH connection timed out. Check the host and port.")
+        else:
+            # For any other exceptions, we can just raise the original exception
+            raise e
 
 
 def ssh_exec(ssh, command):

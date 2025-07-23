@@ -1,0 +1,15 @@
+[flake8]
+# Max line length to match black's default (88)
+max-line-length = 88
+
+# Ignore rules that conflict with black
+ignore = W503, E203
+
+exclude =
+    .git,
+    .github,
+    docs,
+    __pycache__,
+    .venv,
+    build,
+    dist

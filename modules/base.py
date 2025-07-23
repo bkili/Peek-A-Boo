@@ -1,4 +1,5 @@
-# modules/base.py
+# modules/base_plugin.py
+
 
 class BaseModule:
     def __init__(self):
@@ -22,15 +23,12 @@ class BaseModule:
         if key in self.options:
             self.options[key] = value.strip()
 
-
-
     def options_reload(self):
         """
         Reset all options to their default values.
         Called with: reload
         """
         self.options = self.default_options.copy()
-        print(f"[{self.name}] Options reloaded to default.")
 
     def requires(self):
         """

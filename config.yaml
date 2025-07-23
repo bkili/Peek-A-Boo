@@ -1,0 +1,33 @@
+# Global Configuration File
+# This file contains global settings for the application.
+
+# You can modify these settings to add or remove plugins.
+ENABLED_PLUGINS:
+#  - history_plugin
+
+# The following settings are for the history.
+HISTORY:
+  # Enable or disable the history feature.
+  # It's case-sensitive, so use 'true' or 'false'.
+  HISTORY_ENABLED: true
+
+  # Obfuscation settings for history entries.
+  # If set to true, sensitive values in history entries will be obfuscated.
+  # Example: If a history entry contains an option with a value of 'password123',
+  # it will be stored as '********' in the history.
+  # set password password123 => history: set password ********
+  # It's case-sensitive, so use 'true' or 'false'.
+  OBFUSCATE_VALUES_IN_HISTORY: true
+
+  # The maximum number of history entries to keep.
+  MAX_ENTRIES: 1000
+
+# Aliases for commands.
+ALIASES:
+  # Example alias for the 'list' command.
+  # l: list all
+  # This means you can use 'l' as an alias for 'list all'.
+  # You can add more aliases as needed.
+  l: list
+  c: clear
+  h: history

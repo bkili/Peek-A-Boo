@@ -5,7 +5,7 @@ import os
 from core.registry import register_command
 from core.state import set_current_module
 from core.utils.formatter import printc
-from core.utils.listing import list_plugins, list_modules, list_exploits
+from core.utils.listing import list_plugins, list_exploits
 
 
 @register_command("use")
@@ -35,11 +35,14 @@ def handle_use(args, shared_data):
         shared_data["CURRENT_MODULE"] = instance
         printc(f"[+] Module selected: {module_name}", level="success")
     except Exception as e:
+        shared_data["CURRENT_MODULE"] = None
         printc(f"[!] Failed to import module '{module_name}': {e}", level="error")
+
 
 @register_command("info")
 def handle_info(args, shared_data):
     from core.state import get_current_module
+
     mod = get_current_module()
     if args:
         module_name = args[0]
@@ -68,9 +71,11 @@ def handle_info(args, shared_data):
     else:
         printc("No module selected.", level="warn")
 
+
 @register_command("run")
 def handle_run(args, shared_data):
     from core.state import get_current_module
+
     mod = get_current_module()
     if not mod:
         printc("No module selected.", level="error")
@@ -89,12 +94,14 @@ def handle_run(args, shared_data):
                 printc(f"[core] Failed to run dependency {dep}: {e}", level="error")
     mod.run(shared_data)
 
+
 @register_command("reload")
 def handle_reload(args, shared_data):
     from core.state import get_current_module
+
     mod = get_current_module()
     if mod and hasattr(mod, "options_reload"):
         mod.options_reload()
         printc(f"[{mod.name}] Options reloaded to default.", level="info")
     else:
-        printc("Reload not supported.", level="warn")
+        printc("No module found: reload not supported.", level="warn")
