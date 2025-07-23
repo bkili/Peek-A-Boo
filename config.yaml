@@ -21,3 +21,13 @@ HISTORY:
 
   # The maximum number of history entries to keep.
   MAX_ENTRIES: 1000
+
+# Aliases for commands.
+ALIASES:
+  # Example alias for the 'list' command.
+  # l: list all
+  # This means you can use 'l' as an alias for 'list all'.
+  # You can add more aliases as needed.
+  l: list
+  c: clear
+  h: history

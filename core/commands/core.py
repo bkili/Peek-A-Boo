@@ -1,6 +1,7 @@
 # core/commands/core.py
 from core.registry import register_command
 from core.utils.formatter import printc
+from core.config_ops import add_alias_to_config
 import sys
 import os
 
@@ -27,7 +28,9 @@ def handle_clear(args, shared_data):
 
 @register_command("history")
 def handle_history(args, shared_data):
-    path = ".pb_history"
+    from core.cli import HISTORY_PATH
+
+    path = HISTORY_PATH
     if not os.path.exists(path):
         printc("No command history found.", level="warn")
         return
@@ -49,3 +52,29 @@ def handle_history(args, shared_data):
 def handle_debug(args, shared_data):
     for arg in args:
         print(f"Debug argument: {arg}")
+
+
+@register_command("alias")
+def handle_alias(args, shared_data):
+    if not args:
+        printc("Usage: alias <alias_name> = <command>", level="warn")
+
+    elif len(args) == 1:
+        printc("Usage: alias <alias_name> = <command>", level="warn")
+
+    else:
+        input_str = " ".join(args)
+        if "=" not in input_str:
+            printc("Usage: alias <alias_name> = <command>", level="warn")
+            return
+        alias_name, command_str = map(str.strip, input_str.split("=", 1))
+
+        if not alias_name or not command_str:
+            printc("Usage: alias <alias_name> = <command>", level="warn")
+            printc("Both alias name and command must be provided.", level="error")
+            return
+
+        add_alias_to_config(alias_name, command_str)
+        printc(
+            f"[*] Alias registered: {alias_name} => {command_str}", level="selection"
+        )

@@ -2,7 +2,7 @@ from pathlib import Path
 from prompt_toolkit.completion import Completer, NestedCompleter, PathCompleter
 from core.utils.listing import list_modules, list_plugins, list_exploits
 from core.state import get_current_module
-from core.config import load_global_config
+from core.config_ops import load_global_config
 from prompt_toolkit.document import Document
 
 global_config = load_global_config()

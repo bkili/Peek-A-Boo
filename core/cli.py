@@ -2,11 +2,12 @@
 import logging
 import os
 
+from pathlib import Path
 from core.commands import core, module_ops, config_ops, display, option_ops  # noqa
 from core.completer import SmartCompleter
 from core.registry import COMMAND_HANDLERS
 from core.utils.formatter import printc
-from core.config import get_global_config
+from core.config_ops import get_global_config
 from prompt_toolkit import PromptSession
 from prompt_toolkit.styles import Style
 
@@ -18,7 +19,10 @@ history_settings = settings.get("HISTORY", {})
 HISTORY_ENABLED = history_settings.get("HISTORY_ENABLED", True)
 OBFUSCATE_VALUES_IN_HISTORY = history_settings.get("OBFUSCATE_VALUES_IN_HISTORY", False)
 MAX_ENTRIES = history_settings.get("MAX_ENTRIES", 1000)
-HISTORY_PATH = ".pb_history"
+
+HISTORY_PATH = Path(os.getenv("PB_HISTORY_PATH", ".pb_history"))
+
+ALIASES = settings.get("ALIASES", {})
 
 
 def start_cli():
@@ -47,25 +51,38 @@ def start_cli():
         command = parts[0]
         args = parts[1:]
 
+        # Tries handler first, if it's None, checks aliases
         handler = COMMAND_HANDLERS.get(command)
-        if handler:
-            handler(args, shared_data)
 
-            write_history_entry(command, cmd, args)
+        # Looks for alias if handler is None, and command is in ALIASES
+        if not handler and command in ALIASES:
+            alias_value = ALIASES[command]
+            alias_parts = alias_value.split()
+            command = alias_parts[0]
+            args = alias_parts[1:] + args  # alias args önden gelir
+            handler = COMMAND_HANDLERS.get(command)
 
-            # Clear the command history if the command is 'clear history'
-            if command == "clear" and args and args[0] == "history":
-                with open(".pb_history", "w") as hist_file:
-                    hist_file.write("")
-                printc("Command history cleared.", level="success")
-                continue
-
-            if command == "use" and args and shared_data.get("CURRENT_MODULE"):
-                cmd_module_name = args[0]
-            completer.update_nested()
-        else:
+        # If still no handler, prints error
+        if not handler:
             printc(f"Unknown command: {command}", level="error")
             logging.warning(f"Unknown command: {command}")
+            continue
+
+        # Calls the handler with args and shared_data
+        handler(args, shared_data)
+        write_history_entry(command, cmd, args)
+
+        # clear history command
+        if command == "clear" and args and args[0] == "history":
+            with open(HISTORY_PATH, "w") as hist_file:
+                hist_file.write("")
+            printc("Command history cleared.", level="success")
+            continue
+
+        if command == "use" and args and shared_data.get("CURRENT_MODULE"):
+            cmd_module_name = args[0]
+
+        completer.update_nested()
 
 
 # Write command to history
